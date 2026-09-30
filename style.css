@@ -1154,76 +1154,6 @@ canvas {
   opacity: 1;
 }
 
-/* =========================================================
-   ПЕРО
-   ========================================================= */
-
-.writing-pen {
-  position: absolute;
-
-  width:
-    clamp(
-      125px,
-      18vw,
-      175px
-    );
-
-  height: auto;
-
-  left: 0;
-  top: 0;
-
-  z-index: 20;
-
-  pointer-events: none;
-
-  overflow: visible;
-
-  transition: none;
-
-  /*
-    Якорь пера — его настоящий кончик.
-    Благодаря этому поворот пера больше не
-    смещает кончик относительно текста.
-  */
-  transform-origin: 96.67% 95.56%;
-
-  will-change:
-    left,
-    top;
-
-  filter:
-    drop-shadow(
-      1px 4px 4px
-      rgba(40,20,10,.35)
-    );
-
-  /*
-    Положение пера как при письме правой рукой.
-    transform-origin выше ставит вращение точно
-    вокруг кончика пера.
-  */
-  transform:
-    rotate(135deg);
-}
-
-.page-number {
-  flex: 0 0 auto;
-
-  margin-top: 15px;
-
-  color:
-    rgba(70,40,25,.55);
-
-  font-family:
-    Georgia,
-    "Times New Roman",
-    serif;
-
-  font-size: 13px;
-
-  font-style: italic;
-}
 
 /* =========================================================
    СТРАНИЦА 5 — ФОТОГРАФИИ
@@ -1841,10 +1771,6 @@ canvas {
     text-align: left;
   }
 
-  .writing-pen {
-    width: 125px;
-  }
-
   .book-controls {
     width: 92vw;
 
@@ -1946,10 +1872,6 @@ canvas {
       16px;
   }
 
-  .writing-pen {
-    width: 112px;
-  }
-
   .book-button {
     min-width: 190px;
 
@@ -1998,10 +1920,6 @@ canvas {
 
   .writing-text {
     line-height: 1.48;
-  }
-
-  .writing-pen {
-    width: 180px;
   }
 
   .book-controls {
@@ -2065,9 +1983,9 @@ canvas {
    ========================================================= */
 
 .cake-photo-wrap {
+  display: none;
   width: min(70vw, 280px);
   margin: 0 auto 24px;
-  display: flex;
   justify-content: center;
   align-items: center;
 }
@@ -2108,4 +2026,16 @@ canvas {
   pointer-events: auto !important;
   touch-action: manipulation !important;
   -webkit-tap-highlight-color: transparent;
+}
+
+
+/* Кнопка книги: обычная навигация, без дополнительных слоёв. */
+.book-controls {
+  position: relative;
+  z-index: 100;
+}
+
+.book-button {
+  pointer-events: auto;
+  touch-action: manipulation;
 }
