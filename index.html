@@ -3800,5 +3800,89 @@ candle.addEventListener(
 
 </script>
 
+
+<script>
+window.addEventListener("DOMContentLoaded", function () {
+
+  const button = document.getElementById("continueButton");
+  const completion = document.getElementById("completion-screen");
+  const book = document.getElementById("book-section");
+
+  if (!button || !completion || !book) return;
+
+  function openBirthdayBook(event) {
+
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+
+    /* Hide the finished-game screen immediately. */
+    completion.classList.remove("visible", "ready", "fade-out");
+    completion.style.display = "none";
+    completion.style.visibility = "hidden";
+    completion.style.pointerEvents = "none";
+
+    /* Show the book immediately. */
+    book.style.display = "flex";
+    book.style.visibility = "visible";
+    book.style.opacity = "1";
+
+    /* Reset the book to page 1. */
+    if (typeof currentBookPage !== "undefined") {
+      currentBookPage = 0;
+    }
+
+    if (typeof bookWriting !== "undefined") {
+      bookWriting = false;
+    }
+
+    if (typeof pageElements !== "undefined") {
+      pageElements.forEach(function(page) {
+        page.classList.remove("turning");
+      });
+    }
+
+    const next = document.getElementById("bookNextButton");
+    if (next) {
+      next.classList.remove("visible");
+    }
+
+    /* Prepare and start the first text page. */
+    if (typeof preparePage === "function" &&
+        typeof writePage === "function") {
+
+      preparePage(0);
+      preparePage(1);
+      preparePage(2);
+      preparePage(3);
+
+      if (typeof loadPhotos === "function") {
+        loadPhotos();
+      }
+
+      requestAnimationFrame(function () {
+        writePage(0);
+      });
+    }
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  }
+
+  /*
+    Both handlers are intentional:
+    click covers normal browsers,
+    touchend covers mobile WebViews/browsers where the
+    decorative overlay can interfere with a normal click.
+  */
+  button.addEventListener("click", openBirthdayBook, true);
+  button.addEventListener("touchend", openBirthdayBook, true);
+
+});
+</script>
+
 </body>
 </html>
