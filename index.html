@@ -1,0 +1,3810 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+<title>Для Nora</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<!-- =======================================================
+     МУЗЫКА
+     ======================================================= -->
+
+<div id="music-screen">
+
+  
+        <!-- MUSIC INTRO PHOTO: photos/music-intro-photo.jpg -->
+        <div class="music-intro-photo-wrap">
+          <img
+            id="musicIntroPhoto"
+            class="music-intro-photo"
+            src="photos/music-intro-photo.jpg"
+            alt="Фотография для музыкального вступления">
+        </div>
+
+<div class="music-title">
+    Дабы ощутить приятную атмосферу,
+    нажми на кнопку ниже, чтобы включить песню.
+  </div>
+
+  <button
+    class="music-button"
+    id="musicButton"
+    type="button">
+    Включить музыку ♫
+  </button>
+
+</div>
+
+<audio
+  id="birthdayMusic"
+  preload="auto"
+  loop>
+</audio>
+
+<!-- =======================================================
+     ПАРОЛЬ
+     ======================================================= -->
+
+<div id="password-screen">
+
+  <div class="password-title">
+    Введите пароль
+  </div>
+
+  <div
+    id="password-display"
+    aria-label="Пароль">
+  </div>
+
+  <div id="password-error">
+    <div>Неверный пароль</div>
+    <div>
+      Можешь обратиться к Саиду чтобы получить пароль
+    </div>
+  </div>
+
+  <div class="keypad">
+
+    <button class="key" type="button" data-key="1">1</button>
+    <button class="key" type="button" data-key="2">2</button>
+    <button class="key" type="button" data-key="3">3</button>
+
+    <button class="key" type="button" data-key="4">4</button>
+    <button class="key" type="button" data-key="5">5</button>
+    <button class="key" type="button" data-key="6">6</button>
+
+    <button class="key" type="button" data-key="7">7</button>
+    <button class="key" type="button" data-key="8">8</button>
+    <button class="key" type="button" data-key="9">9</button>
+
+    <button
+      class="key clear"
+      type="button"
+      data-key="clear">
+      ⌫
+    </button>
+
+    <button
+      class="key"
+      type="button"
+      data-key="0">
+      0
+    </button>
+
+    <button
+      class="key clear"
+      type="button"
+      data-key="enter">
+      ✓
+    </button>
+
+  </div>
+</div>
+
+<!-- =======================================================
+     INTRO ИГРЫ
+     ======================================================= -->
+
+<div
+  id="mini-intro"
+  class="game-overlay">
+
+  <div class="mini-title">
+    Nora, прежде чем перейти к поздравлению,
+    тебе предстоит пройти небольшую мини-игру.<br>
+    Надеюсь, ты справишься. Верю в тебя ❤️
+  </div>
+
+  <button
+    class="game-btn"
+    id="gameStartButton"
+    type="button">
+    Начать
+  </button>
+
+</div>
+
+<!-- =======================================================
+     ИГРА
+     ======================================================= -->
+
+<div
+  id="game-screen"
+  class="game-overlay">
+
+  <div class="game-top">
+
+    <div class="game-title">
+      Собери всё ✨
+    </div>
+
+    <div class="game-subtitle">
+      Перетащи звёзды и сердечки
+      в соответствующие корзины
+    </div>
+
+  </div>
+
+  <div id="game-field"></div>
+
+  <div class="baskets-area">
+
+    <div class="basket-wrap">
+
+      <div
+        class="basket"
+        id="starBasket">
+      </div>
+
+      <div class="basket-label">
+        ⭐ Звёздная корзина
+      </div>
+
+      <div
+        class="counter"
+        id="starCounter">
+        Собрано: 0/10
+      </div>
+
+    </div>
+
+    <div class="basket-wrap">
+
+      <div
+        class="basket pink"
+        id="heartBasket">
+      </div>
+
+      <div class="basket-label">
+        💗 Сердечная корзина
+      </div>
+
+      <div
+        class="counter pink"
+        id="heartCounter">
+        Собрано: 0/10
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- =======================================================
+     ЗАВЕРШЕНИЕ ИГРЫ
+     ======================================================= -->
+
+<div
+  id="completion-screen"
+  class="game-overlay">
+
+  <div class="completion-text">
+    Умница Nora. Ты справилась ❤️
+  </div>
+
+  <button
+    class="game-btn"
+    id="continueButton"
+    type="button">
+    Перейти к поздравлению
+  </button>
+
+</div>
+
+<!-- =======================================================
+     CANVAS
+     ======================================================= -->
+
+<canvas id="skyCanvas"></canvas>
+<canvas id="confettiCanvas"></canvas>
+
+<!-- =======================================================
+     ОСНОВНАЯ ЧАСТЬ
+     ======================================================= -->
+
+<div class="wrapper">
+
+  <!-- =====================================================
+       КНИГА
+       ===================================================== -->
+
+  <section id="book-section">
+
+    <div class="book" id="book">
+
+      <!-- ================= PAGE 1 ================= -->
+
+      <div
+        class="book-page"
+        data-page="0">
+
+        <div class="page-content">
+
+          <div class="page-writing">
+
+            <div
+              class="writing-text"
+              id="writingText0">
+            </div>
+
+            <svg
+              class="writing-pen"
+              id="pen0"
+              viewBox="0 0 240 90"
+              xmlns="http://www.w3.org/2000/svg">
+
+              <path
+                d="
+                  M 16 48
+                  C 38 7, 82 3, 142 20
+                  C 119 36, 94 57, 45 67
+                  C 31 69, 21 61, 16 48 Z
+                "
+                fill="#eee6d2"
+                stroke="#b59b72"
+                stroke-width="1.8"/>
+
+              <path
+                d="
+                  M 18 48
+                  C 42 30, 75 19, 139 20
+                  C 102 29, 67 46, 28 60
+                  Z
+                "
+                fill="#d8c6a1"
+                opacity=".8"/>
+
+              <path
+                d="
+                  M 17 49
+                  C 64 47, 104 35, 150 18
+                "
+                fill="none"
+                stroke="#73563b"
+                stroke-width="3"
+                stroke-linecap="round"/>
+
+              <path
+                d="
+                  M 39 53 L 29 22
+                  M 51 49 L 46 14
+                  M 63 45 L 65 11
+                  M 77 40 L 83 10
+                  M 91 35 L 101 12
+                  M 105 31 L 119 15
+                  M 119 26 L 136 19
+                "
+                stroke="#a68b67"
+                stroke-width="1.5"
+                opacity=".8"/>
+
+              <ellipse
+                cx="148"
+                cy="28"
+                rx="10"
+                ry="6"
+                fill="none"
+                stroke="#c99a43"
+                stroke-width="3"/>
+
+              <path
+                d="
+                  M 145 27
+                  L 221 76
+                "
+                stroke="#1d1716"
+                stroke-width="13"
+                stroke-linecap="round"/>
+
+              <path
+                d="
+                  M 162 38 L 168 43
+                  M 173 45 L 179 50
+                  M 184 52 L 190 57
+                  M 195 59 L 201 64
+                "
+                stroke="#b98536"
+                stroke-width="3"
+                stroke-linecap="round"/>
+
+              <path
+                d="
+                  M 213 70
+                  L 232 86
+                  L 224 63
+                  Z
+                "
+                fill="#8c8a83"
+                stroke="#494642"
+                stroke-width="1.5"/>
+
+              <path
+                d="
+                  M 224 63
+                  L 232 86
+                "
+                stroke="#d7d3c8"
+                stroke-width="1.5"/>
+
+            </svg>
+
+          </div>
+
+          <div class="page-number">
+            — 1 —
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- ================= PAGE 2 ================= -->
+
+      <div
+        class="book-page"
+        data-page="1">
+
+        <div class="page-content">
+
+          <div class="page-writing">
+
+            <div
+              class="writing-text"
+              id="writingText1">
+            </div>
+
+            <svg
+              class="writing-pen"
+              id="pen1"
+              viewBox="0 0 240 90"
+              xmlns="http://www.w3.org/2000/svg">
+
+              <path
+                d="
+                  M 16 48
+                  C 38 7, 82 3, 142 20
+                  C 119 36, 94 57, 45 67
+                  C 31 69, 21 61, 16 48 Z
+                "
+                fill="#eee6d2"
+                stroke="#b59b72"
+                stroke-width="1.8"/>
+
+              <path
+                d="
+                  M 18 48
+                  C 42 30, 75 19, 139 20
+                  C 102 29, 67 46, 28 60
+                  Z
+                "
+                fill="#d8c6a1"
+                opacity=".8"/>
+
+              <path
+                d="
+                  M 17 49
+                  C 64 47, 104 35, 150 18
+                "
+                fill="none"
+                stroke="#73563b"
+                stroke-width="3"
+                stroke-linecap="round"/>
+
+              <path
+                d="
+                  M 39 53 L 29 22
+                  M 51 49 L 46 14
+                  M 63 45 L 65 11
+                  M 77 40 L 83 10
+                  M 91 35 L 101 12
+                  M 105 31 L 119 15
+                  M 119 26 L 136 19
+                "
+                stroke="#a68b67"
+                stroke-width="1.5"
+                opacity=".8"/>
+
+              <ellipse
+                cx="148"
+                cy="28"
+                rx="10"
+                ry="6"
+                fill="none"
+                stroke="#c99a43"
+                stroke-width="3"/>
+
+              <path
+                d="
+                  M 145 27
+                  L 221 76
+                "
+                stroke="#1d1716"
+                stroke-width="13"
+                stroke-linecap="round"/>
+
+              <path
+                d="
+                  M 162 38 L 168 43
+                  M 173 45 L 179 50
+                  M 184 52 L 190 57
+                  M 195 59 L 201 64
+                "
+                stroke="#b98536"
+                stroke-width="3"
+                stroke-linecap="round"/>
+
+              <path
+                d="
+                  M 213 70
+                  L 232 86
+                  L 224 63
+                  Z
+                "
+                fill="#8c8a83"
+                stroke="#494642"
+                stroke-width="1.5"/>
+
+            </svg>
+
+          </div>
+
+          <div class="page-number">
+            — 2 —
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- ================= PAGE 3 ================= -->
+
+      <div
+        class="book-page"
+        data-page="2">
+
+        <div class="page-content">
+
+          <div class="page-writing">
+
+            <div
+              class="writing-text"
+              id="writingText2">
+            </div>
+
+            <svg
+              class="writing-pen"
+              id="pen2"
+              viewBox="0 0 240 90"
+              xmlns="http://www.w3.org/2000/svg">
+
+              <path
+                d="
+                  M 16 48
+                  C 38 7, 82 3, 142 20
+                  C 119 36, 94 57, 45 67
+                  C 31 69, 21 61, 16 48 Z
+                "
+                fill="#eee6d2"
+                stroke="#b59b72"
+                stroke-width="1.8"/>
+
+              <path
+                d="
+                  M 18 48
+                  C 42 30, 75 19, 139 20
+                  C 102 29, 67 46, 28 60
+                  Z
+                "
+                fill="#d8c6a1"
+                opacity=".8"/>
+
+              <path
+                d="
+                  M 17 49
+                  C 64 47, 104 35, 150 18
+                "
+                fill="none"
+                stroke="#73563b"
+                stroke-width="3"
+                stroke-linecap="round"/>
+
+              <path
+                d="
+                  M 39 53 L 29 22
+                  M 51 49 L 46 14
+                  M 63 45 L 65 11
+                  M 77 40 L 83 10
+                  M 91 35 L 101 12
+                  M 105 31 L 119 15
+                  M 119 26 L 136 19
+                "
+                stroke="#a68b67"
+                stroke-width="1.5"
+                opacity=".8"/>
+
+              <ellipse
+                cx="148"
+                cy="28"
+                rx="10"
+                ry="6"
+                fill="none"
+                stroke="#c99a43"
+                stroke-width="3"/>
+
+              <path
+                d="
+                  M 145 27
+                  L 221 76
+                "
+                stroke="#1d1716"
+                stroke-width="13"
+                stroke-linecap="round"/>
+
+              <path
+                d="
+                  M 162 38 L 168 43
+                  M 173 45 L 179 50
+                  M 184 52 L 190 57
+                  M 195 59 L 201 64
+                "
+                stroke="#b98536"
+                stroke-width="3"
+                stroke-linecap="round"/>
+
+              <path
+                d="
+                  M 213 70
+                  L 232 86
+                  L 224 63
+                  Z
+                "
+                fill="#8c8a83"
+                stroke="#494642"
+                stroke-width="1.5"/>
+
+            </svg>
+
+          </div>
+
+          <div class="page-number">
+            — 3 —
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- ================= PAGE 4 ================= -->
+
+      <div
+        class="book-page"
+        data-page="3">
+
+        <div class="page-content">
+
+          <div class="page-writing">
+
+            <div
+              class="writing-text"
+              id="writingText3">
+            </div>
+
+            <svg
+              class="writing-pen"
+              id="pen3"
+              viewBox="0 0 240 90"
+              xmlns="http://www.w3.org/2000/svg">
+
+              <path
+                d="
+                  M 16 48
+                  C 38 7, 82 3, 142 20
+                  C 119 36, 94 57, 45 67
+                  C 31 69, 21 61, 16 48 Z
+                "
+                fill="#eee6d2"
+                stroke="#b59b72"
+                stroke-width="1.8"/>
+
+              <path
+                d="
+                  M 18 48
+                  C 42 30, 75 19, 139 20
+                  C 102 29, 67 46, 28 60
+                  Z
+                "
+                fill="#d8c6a1"
+                opacity=".8"/>
+
+              <path
+                d="
+                  M 17 49
+                  C 64 47, 104 35, 150 18
+                "
+                fill="none"
+                stroke="#73563b"
+                stroke-width="3"
+                stroke-linecap="round"/>
+
+              <path
+                d="
+                  M 39 53 L 29 22
+                  M 51 49 L 46 14
+                  M 63 45 L 65 11
+                  M 77 40 L 83 10
+                  M 91 35 L 101 12
+                  M 105 31 L 119 15
+                  M 119 26 L 136 19
+                "
+                stroke="#a68b67"
+                stroke-width="1.5"
+                opacity=".8"/>
+
+              <ellipse
+                cx="148"
+                cy="28"
+                rx="10"
+                ry="6"
+                fill="none"
+                stroke="#c99a43"
+                stroke-width="3"/>
+
+              <path
+                d="
+                  M 145 27
+                  L 221 76
+                "
+                stroke="#1d1716"
+                stroke-width="13"
+                stroke-linecap="round"/>
+
+              <path
+                d="
+                  M 162 38 L 168 43
+                  M 173 45 L 179 50
+                  M 184 52 L 190 57
+                  M 195 59 L 201 64
+                "
+                stroke="#b98536"
+                stroke-width="3"
+                stroke-linecap="round"/>
+
+              <path
+                d="
+                  M 213 70
+                  L 232 86
+                  L 224 63
+                  Z
+                "
+                fill="#8c8a83"
+                stroke="#494642"
+                stroke-width="1.5"/>
+
+            </svg>
+
+          </div>
+
+          <div class="page-number">
+            — 4 —
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- ================= PAGE 5 — ФОТО ================= -->
+
+      <div
+        class="book-page"
+        data-page="4">
+
+        <div class="page-content photo-page-content">
+
+          <div class="photo-title">
+            Несколько моментов ✨
+          </div>
+
+          <div class="photo-grid">
+
+            <div class="photo-row">
+
+              <div class="photo-frame">
+                <img
+                  id="photo1"
+                  alt="Фото 1">
+              </div>
+
+              <div class="photo-caption">
+                Здесь можешь написать свой текст
+                для первой фотографии.
+              </div>
+
+            </div>
+
+<div
+        class="book-page"
+        data-page="5">
+
+        <div class="page-content photo-page-content">
+
+          <div class="photo-title">
+            Несколько моментов ✨
+          </div>
+
+          <div class="photo-grid">
+
+            <div class="photo-row">
+
+              <div class="photo-frame">
+                <img
+                  id="photo5"
+                  alt="Фото 1">
+              </div>
+
+              <div class="photo-caption">
+                Здесь можешь написать свой текст
+                для первой фотографии.
+              </div>
+
+            </div>
+
+            <div class="photo-row reverse">
+
+              <div class="photo-frame">
+                <img
+                  id="photo2"
+                  alt="Фото 2">
+              </div>
+
+              <div class="photo-caption">
+                Здесь можешь написать свой текст
+                для второй фотографии.
+              </div>
+
+            </div>
+
+            <div class="photo-row">
+
+              <div class="photo-frame">
+                <img
+                  id="photo3"
+                  alt="Фото 3">
+              </div>
+
+              <div class="photo-caption">
+                Здесь можешь написать свой текст
+                для третьей фотографии.
+              </div>
+
+            </div>
+
+            <div class="photo-row reverse">
+
+              <div class="photo-frame">
+                <img
+                  id="photo4"
+                  alt="Фото 4">
+              </div>
+
+              <div class="photo-caption">
+                Здесь можешь написать свой текст
+                для четвёртой фотографии.
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="page-number">
+            — 5 —
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- КНОПКА -->
+
+    <div class="book-controls">
+
+      <button
+        class="book-button"
+        id="bookNextButton"
+        type="button">
+        Следующая страница
+      </button>
+
+    </div>
+
+  </section>
+
+  <!-- =====================================================
+       ТОРТ
+       ===================================================== -->
+
+  <div
+    class="glow-line"
+    id="separator">
+  </div>
+
+  <div
+    class="cake-container"
+    id="cake">
+
+    <div
+      class="candle"
+      id="candle">
+
+      <div
+        class="flame"
+        id="flame">
+      </div>
+
+      <div
+        class="smoke"
+        id="smoke">
+      </div>
+
+    </div>
+
+    <div class="layer layer-3"></div>
+    <div class="layer layer-2"></div>
+    <div class="layer layer-1"></div>
+
+    <div id="hint">
+      Загадай желание<br>
+      и коснись огонька 💫
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+"use strict";
+
+/* =========================================================
+   НАСТРОЙКИ ФАЙЛОВ
+   ========================================================= */
+
+/*
+  СЮДА НИЧЕГО МЕНЯТЬ НЕ НУЖНО,
+  если названия файлов будут именно такими.
+*/
+
+const MUSIC_FILE =
+  "music/Young-and-Beautiful.mp3";
+
+const PHOTO_FILES = [
+  "photos/photo1.jpg",
+  "photos/photo2.jpg",
+  "photos/photo3.jpg",
+  "photos/photo4.jpg",
+  "photos/photo5.jpg",
+  "photos/photo6.jpg",
+  "photos/photo7.jpg",
+  "photos/photo8.jpg"
+];
+
+
+/* =========================================================
+   ЭЛЕМЕНТЫ
+   ========================================================= */
+
+const musicScreen =
+  document.getElementById("music-screen");
+
+const musicButton =
+  document.getElementById("musicButton");
+
+const birthdayMusic =
+  document.getElementById("birthdayMusic");
+
+const passwordScreen =
+  document.getElementById("password-screen");
+
+const passwordDisplay =
+  document.getElementById("password-display");
+
+const passwordError =
+  document.getElementById("password-error");
+
+const keypad =
+  document.querySelector(".keypad");
+
+const separator =
+  document.getElementById("separator");
+
+const cake =
+  document.getElementById("cake");
+
+const candle =
+  document.getElementById("candle");
+
+const flame =
+  document.getElementById("flame");
+
+const smoke =
+  document.getElementById("smoke");
+
+const hint =
+  document.getElementById("hint");
+
+const miniIntro =
+  document.getElementById("mini-intro");
+
+const gameScreen =
+  document.getElementById("game-screen");
+
+const completionScreen =
+  document.getElementById("completion-screen");
+
+const gameStartButton =
+  document.getElementById("gameStartButton");
+
+const continueButton =
+  document.getElementById("continueButton");
+
+const gameField =
+  document.getElementById("game-field");
+
+const starBasket =
+  document.getElementById("starBasket");
+
+const heartBasket =
+  document.getElementById("heartBasket");
+
+const starCounter =
+  document.getElementById("starCounter");
+
+const heartCounter =
+  document.getElementById("heartCounter");
+
+const bookSection =
+  document.getElementById("book-section");
+
+const book =
+  document.getElementById("book");
+
+const bookNextButton =
+  document.getElementById("bookNextButton");
+
+
+/* =========================================================
+   МУЗЫКА
+   ========================================================= */
+
+birthdayMusic.src =
+  MUSIC_FILE;
+
+birthdayMusic.loop =
+  true;
+
+musicButton.addEventListener(
+  "click",
+  async () => {
+
+    try {
+
+      await birthdayMusic.play();
+
+      musicScreen.classList.add(
+        "hidden"
+      );
+
+      setTimeout(
+        () => {
+
+          musicScreen.style.display =
+            "none";
+
+          passwordScreen.style.display =
+            "flex";
+
+        },
+        700
+      );
+
+    } catch (error) {
+
+      console.error(
+        "Не удалось запустить музыку:",
+        error
+      );
+
+      /*
+        Даже если браузер по какой-либо
+        причине не разрешил аудио,
+        после нажатия всё равно продолжаем.
+      */
+
+      musicScreen.classList.add(
+        "hidden"
+      );
+
+      setTimeout(
+        () => {
+
+          musicScreen.style.display =
+            "none";
+
+          passwordScreen.style.display =
+            "flex";
+
+        },
+        700
+      );
+    }
+  }
+);
+
+
+/* =========================================================
+   ПАРОЛЬ
+   ========================================================= */
+
+const correctPassword =
+  "151006";
+
+let enteredPassword =
+  "";
+
+
+function updatePasswordDisplay() {
+
+  passwordDisplay.textContent =
+    "•".repeat(
+      enteredPassword.length
+    );
+}
+
+
+function showPasswordError() {
+
+  passwordError.classList.add(
+    "show"
+  );
+}
+
+
+function hidePasswordError() {
+
+  passwordError.classList.remove(
+    "show"
+  );
+}
+
+
+function checkPassword() {
+
+  if (
+    enteredPassword ===
+    correctPassword
+  ) {
+
+    passwordError.classList.remove(
+      "show"
+    );
+
+    passwordScreen.style.transition =
+      "opacity .6s ease";
+
+    passwordScreen.style.opacity =
+      "0";
+
+    passwordScreen.style.pointerEvents =
+      "none";
+
+    setTimeout(
+      () => {
+
+        passwordScreen.style.display =
+          "none";
+
+        showOverlay(
+          miniIntro
+        );
+
+      },
+      600
+    );
+
+    enteredPassword = "";
+
+    updatePasswordDisplay();
+
+  } else {
+
+    showPasswordError();
+
+    enteredPassword = "";
+
+    updatePasswordDisplay();
+  }
+}
+
+
+keypad.addEventListener(
+  "click",
+  event => {
+
+    const button =
+      event.target.closest(".key");
+
+    if (!button)
+      return;
+
+    const key =
+      button.dataset.key;
+
+    if (
+      key === "clear"
+    ) {
+
+      enteredPassword =
+        enteredPassword.slice(
+          0,
+          -1
+        );
+
+      hidePasswordError();
+
+      updatePasswordDisplay();
+
+      return;
+    }
+
+    if (
+      key === "enter"
+    ) {
+
+      if (
+        enteredPassword.length > 0
+      ) {
+
+        checkPassword();
+      }
+
+      return;
+    }
+
+    if (
+      /^\d$/.test(key) &&
+      enteredPassword.length <
+        correctPassword.length
+    ) {
+
+      enteredPassword +=
+        key;
+
+      hidePasswordError();
+
+      updatePasswordDisplay();
+
+      if (
+        enteredPassword.length ===
+        correctPassword.length
+      ) {
+
+        setTimeout(
+          checkPassword,
+          180
+        );
+      }
+    }
+  }
+);
+
+
+/* =========================================================
+   OVERLAY
+   ========================================================= */
+
+function showOverlay(el) {
+
+  el.style.display =
+    "flex";
+
+  requestAnimationFrame(
+    () => {
+
+      el.classList.add(
+        "visible"
+      );
+
+    }
+  );
+}
+
+
+function hideOverlay(el) {
+
+  el.classList.add(
+    "fade-out"
+  );
+
+  el.classList.remove(
+    "visible"
+  );
+
+  setTimeout(
+    () => {
+
+      el.style.display =
+        "none";
+
+      el.classList.remove(
+        "fade-out"
+      );
+
+    },
+    600
+  );
+}
+
+
+/* =========================================================
+   ФОН
+   ========================================================= */
+
+const skyCanvas =
+  document.getElementById(
+    "skyCanvas"
+  );
+
+const skyCtx =
+  skyCanvas.getContext("2d");
+
+const confettiCanvas =
+  document.getElementById(
+    "confettiCanvas"
+  );
+
+const confettiCtx =
+  confettiCanvas.getContext("2d");
+
+let stars = [];
+let confetti = [];
+
+
+function resizeCanvases() {
+
+  const width =
+    window.innerWidth;
+
+  const height =
+    window.innerHeight;
+
+  const dpr =
+    window.devicePixelRatio || 1;
+
+  skyCanvas.width =
+    width * dpr;
+
+  skyCanvas.height =
+    height * dpr;
+
+  skyCanvas.style.width =
+    width + "px";
+
+  skyCanvas.style.height =
+    height + "px";
+
+  skyCtx.setTransform(
+    dpr,
+    0,
+    0,
+    dpr,
+    0,
+    0
+  );
+
+  confettiCanvas.width =
+    width * dpr;
+
+  confettiCanvas.height =
+    height * dpr;
+
+  confettiCanvas.style.width =
+    width + "px";
+
+  confettiCanvas.style.height =
+    height + "px";
+
+  confettiCtx.setTransform(
+    dpr,
+    0,
+    0,
+    dpr,
+    0,
+    0
+  );
+}
+
+
+window.addEventListener(
+  "resize",
+  resizeCanvases
+);
+
+resizeCanvases();
+
+
+function createStars() {
+
+  stars = [];
+
+  const count =
+    Math.max(
+      85,
+      Math.floor(
+        window.innerWidth *
+        window.innerHeight /
+        11000
+      )
+    );
+
+  for (
+    let s = 0;
+    s < count;
+    s++
+  ) {
+
+    stars.push({
+
+      x:
+        Math.random() *
+        window.innerWidth,
+
+      y:
+        Math.random() *
+        window.innerHeight,
+
+      r:
+        Math.random() *
+        1.7 +
+        .35,
+
+      alpha:
+        Math.random(),
+
+      speed:
+        Math.random() *
+        .018 +
+        .004
+    });
+  }
+}
+
+
+createStars();
+
+
+window.addEventListener(
+  "resize",
+  createStars
+);
+
+
+function drawSky() {
+
+  skyCtx.clearRect(
+    0,
+    0,
+    window.innerWidth,
+    window.innerHeight
+  );
+
+  stars.forEach(
+    star => {
+
+      star.alpha +=
+        star.speed;
+
+      if (
+        star.alpha > 1 ||
+        star.alpha < 0
+      ) {
+
+        star.speed =
+          -star.speed;
+      }
+
+      const glow =
+        Math.abs(
+          Math.sin(
+            star.alpha *
+            Math.PI
+          )
+        );
+
+      skyCtx.fillStyle =
+        `rgba(
+          255,
+          143,
+          199,
+          ${.15 + glow * .7}
+        )`;
+
+      skyCtx.beginPath();
+
+      skyCtx.arc(
+        star.x,
+        star.y,
+        star.r,
+        0,
+        Math.PI * 2
+      );
+
+      skyCtx.fill();
+    }
+  );
+
+  requestAnimationFrame(
+    drawSky
+  );
+}
+
+
+drawSky();
+
+
+/* =========================================================
+   ИГРА
+   ========================================================= */
+
+let gameStarted =
+  false;
+
+let gameFinished =
+  false;
+
+let starScore =
+  0;
+
+let heartScore =
+  0;
+
+let objectId =
+  0;
+
+let activeObjects =
+  new Map();
+
+let gameAnimationId =
+  0;
+
+let lastGameFrame =
+  0;
+
+const gameState = {
+  width: 0,
+  height: 0
+};
+
+
+function clamp(
+  value,
+  min,
+  max
+) {
+
+  return Math.max(
+    min,
+    Math.min(
+      max,
+      value
+    )
+  );
+}
+
+
+function randomBetween(
+  min,
+  max
+) {
+
+  return min +
+    Math.random() *
+    (max - min);
+}
+
+
+function updateGameSize() {
+
+  const rect =
+    gameField.getBoundingClientRect();
+
+  gameState.width =
+    rect.width;
+
+  gameState.height =
+    rect.height;
+
+  activeObjects.forEach(
+    obj => {
+
+      obj.x =
+        clamp(
+          obj.x,
+          3,
+          Math.max(
+            3,
+            gameState.width -
+              obj.size -
+              3
+          )
+        );
+
+      obj.y =
+        clamp(
+          obj.y,
+          3,
+          Math.max(
+            3,
+            gameState.height -
+              obj.size -
+              3
+          )
+        );
+
+      obj.el.style.left =
+        `${obj.x}px`;
+
+      obj.el.style.top =
+        `${obj.y}px`;
+    }
+  );
+}
+
+
+window.addEventListener(
+  "resize",
+  () => {
+
+    if (gameStarted) {
+
+      requestAnimationFrame(
+        updateGameSize
+      );
+    }
+  }
+);
+
+
+function updateCounters() {
+
+  starCounter.textContent =
+    `Собрано: ${starScore}/10`;
+
+  heartCounter.textContent =
+    `Собрано: ${heartScore}/10`;
+}
+
+
+function createCatchPop(
+  x,
+  y,
+  symbol
+) {
+
+  const pop =
+    document.createElement(
+      "div"
+    );
+
+  pop.className =
+    "catch-pop";
+
+  pop.textContent =
+    symbol;
+
+  pop.style.left =
+    `${x - 12}px`;
+
+  pop.style.top =
+    `${y - 12}px`;
+
+  gameField.appendChild(
+    pop
+  );
+
+  setTimeout(
+    () => pop.remove(),
+    600
+  );
+}
+
+
+function spawnObject(
+  type,
+  evasive = false
+) {
+
+  if (gameFinished)
+    return;
+
+  const id =
+    ++objectId;
+
+  const el =
+    document.createElement(
+      "div"
+    );
+
+  el.className =
+    `game-object ${type}${
+      evasive
+        ? " evasive"
+        : ""
+    }`;
+
+  el.dataset.id =
+    id;
+
+  el.setAttribute(
+    "aria-label",
+    type === "star"
+      ? "Звезда"
+      : "Сердечко"
+  );
+
+  gameField.appendChild(
+    el
+  );
+
+  const size =
+    type === "heart"
+      ? 38
+      : 40;
+
+  const margin =
+    8;
+
+  const maxX =
+    Math.max(
+      margin,
+      gameState.width -
+        size -
+        margin
+    );
+
+  const maxY =
+    Math.max(
+      20,
+      gameState.height -
+        size -
+        30
+    );
+
+  const initialAngle =
+    randomBetween(
+      0,
+      Math.PI * 2
+    );
+
+  const initialSpeed =
+    evasive
+      ? randomBetween(
+          1.15,
+          1.85
+        )
+      : randomBetween(
+          .8,
+          1.25
+        );
+
+  const obj = {
+
+    id,
+    type,
+    el,
+
+    x:
+      randomBetween(
+        margin,
+        maxX
+      ),
+
+    y:
+      randomBetween(
+        20,
+        maxY
+      ),
+
+    vx:
+      Math.cos(
+        initialAngle
+      ) *
+      initialSpeed,
+
+    vy:
+      Math.sin(
+        initialAngle
+      ) *
+      initialSpeed,
+
+    phase:
+      Math.random() *
+      Math.PI *
+      2,
+
+    size,
+
+    evasive,
+
+    missed: false,
+
+    dragging: false,
+
+    dragOffsetX: 0,
+    dragOffsetY: 0,
+
+    lastMoveChange:
+      performance.now()
+  };
+
+  el.style.left =
+    `${obj.x}px`;
+
+  el.style.top =
+    `${obj.y}px`;
+
+  el.style.transform =
+    type === "heart"
+      ? "rotate(-45deg)"
+      : "none";
+
+
+  for (
+    let attempt = 0;
+    attempt < 20;
+    attempt++
+  ) {
+
+    let tooClose =
+      false;
+
+    for (
+      const other
+      of activeObjects.values()
+    ) {
+
+      if (
+        Math.hypot(
+          obj.x - other.x,
+          obj.y - other.y
+        ) < 90
+      ) {
+
+        tooClose =
+          true;
+
+        break;
+      }
+    }
+
+    if (!tooClose)
+      break;
+
+    obj.x =
+      randomBetween(
+        margin,
+        maxX
+      );
+
+    obj.y =
+      randomBetween(
+        20,
+        maxY
+      );
+  }
+
+  el.style.left =
+    `${obj.x}px`;
+
+  el.style.top =
+    `${obj.y}px`;
+
+  activeObjects.set(
+    id,
+    obj
+  );
+
+
+  const onPointerDown =
+    event => {
+
+      if (gameFinished)
+        return;
+
+      event.preventDefault();
+
+      obj.dragging =
+        true;
+
+      el.setPointerCapture?.(
+        event.pointerId
+      );
+
+      const rect =
+        gameField.getBoundingClientRect();
+
+      obj.dragOffsetX =
+        event.clientX -
+        rect.left -
+        obj.x;
+
+      obj.dragOffsetY =
+        event.clientY -
+        rect.top -
+        obj.y;
+
+      el.style.zIndex =
+        "20";
+
+      el.style.transition =
+        "none";
+
+      el.style.transform =
+        type === "heart"
+          ? "rotate(-45deg) scale(1.08)"
+          : "scale(1.08)";
+    };
+
+
+  const onPointerMove =
+    event => {
+
+      if (
+        !obj.dragging ||
+        gameFinished
+      )
+        return;
+
+      event.preventDefault();
+
+      const rect =
+        gameField.getBoundingClientRect();
+
+      obj.x =
+        clamp(
+          event.clientX -
+            rect.left -
+            obj.dragOffsetX,
+
+          0,
+
+          gameState.width -
+            obj.size
+        );
+
+      obj.y =
+        clamp(
+          event.clientY -
+            rect.top -
+            obj.dragOffsetY,
+
+          0,
+
+          gameState.height -
+            obj.size
+        );
+
+      el.style.left =
+        `${obj.x}px`;
+
+      el.style.top =
+        `${obj.y}px`;
+    };
+
+
+  const onPointerUp =
+    event => {
+
+      if (
+        !obj.dragging ||
+        gameFinished
+      )
+        return;
+
+      event.preventDefault();
+
+      obj.dragging =
+        false;
+
+      el.style.zIndex =
+        "4";
+
+      el.style.transform =
+        type === "heart"
+          ? "rotate(-45deg)"
+          : "none";
+
+      const basket =
+        type === "star"
+          ? starBasket
+          : heartBasket;
+
+      const basketRect =
+        basket.getBoundingClientRect();
+
+      const fieldRect =
+        gameField.getBoundingClientRect();
+
+      const basketX =
+        basketRect.left -
+        fieldRect.left;
+
+      const basketY =
+        basketRect.top -
+        fieldRect.top;
+
+      const objectCenterX =
+        obj.x +
+        obj.size / 2;
+
+      const objectCenterY =
+        obj.y +
+        obj.size / 2;
+
+      const basketCenterX =
+        basketX +
+        basketRect.width / 2;
+
+      const basketCenterY =
+        basketY +
+        basketRect.height / 2;
+
+      const distance =
+        Math.hypot(
+          objectCenterX -
+            basketCenterX,
+
+          objectCenterY -
+            basketCenterY
+        );
+
+      const catchRadius =
+        Math.max(
+          basketRect.width,
+          basketRect.height
+        ) * .58;
+
+      if (
+        distance <
+        catchRadius
+      ) {
+
+        collectObject(
+          obj
+        );
+
+      } else {
+
+        missObject(
+          obj
+        );
+      }
+    };
+
+
+  el.addEventListener(
+    "pointerdown",
+    onPointerDown,
+    { passive: false }
+  );
+
+  el.addEventListener(
+    "pointermove",
+    onPointerMove,
+    { passive: false }
+  );
+
+  el.addEventListener(
+    "pointerup",
+    onPointerUp,
+    { passive: false }
+  );
+
+  el.addEventListener(
+    "pointercancel",
+    onPointerUp,
+    { passive: false }
+  );
+
+  return obj;
+}
+
+
+function collectObject(obj) {
+
+  if (
+    !activeObjects.has(obj.id) ||
+    gameFinished
+  )
+    return;
+
+  const basket =
+    obj.type === "star"
+      ? starBasket
+      : heartBasket;
+
+  const basketRect =
+    basket.getBoundingClientRect();
+
+  const fieldRect =
+    gameField.getBoundingClientRect();
+
+  const targetX =
+    basketRect.left -
+    fieldRect.left +
+    basketRect.width / 2 -
+    obj.size / 2;
+
+  const targetY =
+    basketRect.top -
+    fieldRect.top +
+    basketRect.height / 2 -
+    obj.size / 2;
+
+  basket.classList.add(
+    "catching"
+  );
+
+  setTimeout(
+    () =>
+      basket.classList.remove(
+        "catching"
+      ),
+    180
+  );
+
+  createCatchPop(
+    obj.x +
+      obj.size / 2,
+
+    obj.y +
+      obj.size / 2,
+
+    obj.type === "star"
+      ? "⭐"
+      : "💗"
+  );
+
+  if (
+    obj.type === "star"
+  ) {
+
+    starScore++;
+
+  } else {
+
+    heartScore++;
+  }
+
+  updateCounters();
+
+  const startX =
+    obj.x;
+
+  const startY =
+    obj.y;
+
+  const start =
+    performance.now();
+
+  const duration =
+    280;
+
+  obj.dragging =
+    false;
+
+  obj.el.style.zIndex =
+    "30";
+
+  obj.el.style.pointerEvents =
+    "none";
+
+
+  function fly(now) {
+
+    const progress =
+      clamp(
+        (now - start) /
+          duration,
+        0,
+        1
+      );
+
+    const eased =
+      1 -
+      Math.pow(
+        1 - progress,
+        3
+      );
+
+    obj.x =
+      startX +
+      (targetX - startX) *
+      eased;
+
+    obj.y =
+      startY +
+      (targetY - startY) *
+      eased;
+
+    obj.el.style.left =
+      `${obj.x}px`;
+
+    obj.el.style.top =
+      `${obj.y}px`;
+
+    obj.el.style.transform =
+      `rotate(${
+        obj.type === "heart"
+          ? -45 +
+            progress * 180
+          : progress * 180
+      }deg) scale(${
+        1 -
+        progress * .35
+      })`;
+
+    if (
+      progress < 1
+    ) {
+
+      requestAnimationFrame(
+        fly
+      );
+
+    } else {
+
+      removeObject(
+        obj
+      );
+
+      if (
+        starScore >= 10 &&
+        heartScore >= 10
+      ) {
+
+        finishGame();
+
+      } else {
+
+        ensureNeededObjects();
+      }
+    }
+  }
+
+  requestAnimationFrame(
+    fly
+  );
+}
+
+
+function missObject(obj) {
+
+  if (
+    !activeObjects.has(obj.id) ||
+    obj.missed ||
+    gameFinished
+  )
+    return;
+
+  obj.missed =
+    true;
+
+  const type =
+    obj.type;
+
+  createCatchPop(
+    obj.x +
+      obj.size / 2,
+
+    obj.y +
+      obj.size / 2,
+
+    "✦"
+  );
+
+  removeObject(
+    obj
+  );
+
+  setTimeout(
+    () => {
+
+      if (!gameFinished) {
+
+        spawnObject(
+          type,
+          true
+        );
+      }
+    },
+    180
+  );
+}
+
+
+function removeObject(obj) {
+
+  activeObjects.delete(
+    obj.id
+  );
+
+  if (
+    obj.el &&
+    obj.el.parentNode
+  ) {
+
+    obj.el.remove();
+  }
+}
+
+
+function ensureNeededObjects() {
+
+  if (gameFinished)
+    return;
+
+  const hasStar =
+    [...activeObjects.values()]
+      .some(
+        o =>
+          o.type === "star"
+      );
+
+  const hasHeart =
+    [...activeObjects.values()]
+      .some(
+        o =>
+          o.type === "heart"
+      );
+
+  if (
+    starScore < 10 &&
+    !hasStar
+  ) {
+
+    spawnObject(
+      "star",
+      false
+    );
+  }
+
+  if (
+    heartScore < 10 &&
+    !hasHeart
+  ) {
+
+    spawnObject(
+      "heart",
+      false
+    );
+  }
+}
+
+
+function moveObject(
+  obj,
+  dt,
+  now
+) {
+
+  if (
+    obj.dragging ||
+    gameFinished
+  )
+    return;
+
+  const dtSec =
+    dt / 16.6667;
+
+  obj.x +=
+    obj.vx *
+    dtSec;
+
+  obj.y +=
+    obj.vy *
+    dtSec;
+
+  obj.x +=
+    Math.sin(
+      obj.phase +
+      now * .0011
+    ) *
+    .28 *
+    dtSec;
+
+  obj.y +=
+    Math.cos(
+      obj.phase * 1.37 +
+      now * .0009
+    ) *
+    .18 *
+    dtSec;
+
+  const minX =
+    4;
+
+  const maxX =
+    Math.max(
+      minX,
+      gameState.width -
+        obj.size -
+        4
+    );
+
+  const minY =
+    4;
+
+  const maxY =
+    Math.max(
+      minY,
+      gameState.height -
+        obj.size -
+        8
+    );
+
+  if (
+    obj.x <= minX
+  ) {
+
+    obj.x =
+      minX;
+
+    obj.vx =
+      Math.abs(
+        obj.vx
+      );
+
+  } else if (
+    obj.x >= maxX
+  ) {
+
+    obj.x =
+      maxX;
+
+    obj.vx =
+      -Math.abs(
+        obj.vx
+      );
+  }
+
+  if (
+    obj.y <= minY
+  ) {
+
+    obj.y =
+      minY;
+
+    obj.vy =
+      Math.abs(
+        obj.vy
+      );
+
+  } else if (
+    obj.y >= maxY
+  ) {
+
+    obj.y =
+      maxY;
+
+    obj.vy =
+      -Math.abs(
+        obj.vy
+      );
+  }
+
+  if (
+    obj.evasive &&
+    now -
+      obj.lastMoveChange >
+      500
+  ) {
+
+    const angle =
+      Math.atan2(
+        obj.vy,
+        obj.vx
+      );
+
+    const turn =
+      randomBetween(
+        -1,
+        1
+      ) * .65;
+
+    const speed =
+      Math.max(
+        .8,
+        Math.hypot(
+          obj.vx,
+          obj.vy
+        )
+      );
+
+    const nextAngle =
+      angle + turn;
+
+    const nextSpeed =
+      clamp(
+        speed *
+          randomBetween(
+            .88,
+            1.15
+          ),
+        .75,
+        3
+      );
+
+    obj.vx =
+      Math.cos(
+        nextAngle
+      ) *
+      nextSpeed;
+
+    obj.vy =
+      Math.sin(
+        nextAngle
+      ) *
+      nextSpeed;
+
+    obj.lastMoveChange =
+      now;
+  }
+
+  obj.el.style.left =
+    `${obj.x}px`;
+
+  obj.el.style.top =
+    `${obj.y}px`;
+
+  obj.el.style.transform =
+    obj.type === "heart"
+      ? "rotate(-45deg)"
+      : "none";
+}
+
+
+function gameLoop(now) {
+
+  if (!gameStarted)
+    return;
+
+  const dt =
+    Math.min(
+      32,
+      now -
+        (
+          lastGameFrame ||
+          now
+        )
+    );
+
+  lastGameFrame =
+    now;
+
+  activeObjects.forEach(
+    obj =>
+      moveObject(
+        obj,
+        dt,
+        now
+      )
+  );
+
+  const objects =
+    [...activeObjects.values()]
+      .filter(
+        o =>
+          !o.dragging
+      );
+
+  for (
+    let i = 0;
+    i < objects.length;
+    i++
+  ) {
+
+    for (
+      let j = i + 1;
+      j < objects.length;
+      j++
+    ) {
+
+      const a =
+        objects[i];
+
+      const b =
+        objects[j];
+
+      const dx =
+        b.x - a.x;
+
+      const dy =
+        b.y - a.y;
+
+      const dist =
+        Math.hypot(
+          dx,
+          dy
+        ) || .01;
+
+      const minDist =
+        (
+          a.size +
+          b.size
+        ) * .95;
+
+      if (
+        dist < minDist
+      ) {
+
+        const nx =
+          dx / dist;
+
+        const ny =
+          dy / dist;
+
+        const push =
+          (
+            minDist -
+            dist
+          ) * .5;
+
+        a.x -=
+          nx * push;
+
+        a.y -=
+          ny * push;
+
+        b.x +=
+          nx * push;
+
+        b.y +=
+          ny * push;
+
+        const avx =
+          a.vx;
+
+        const avy =
+          a.vy;
+
+        a.vx =
+          b.vx * .92;
+
+        a.vy =
+          b.vy * .92;
+
+        b.vx =
+          avx * .92;
+
+        b.vy =
+          avy * .92;
+      }
+    }
+  }
+
+  activeObjects.forEach(
+    obj => {
+
+      obj.x =
+        clamp(
+          obj.x,
+          3,
+          Math.max(
+            3,
+            gameState.width -
+              obj.size -
+              3
+          )
+        );
+
+      obj.y =
+        clamp(
+          obj.y,
+          3,
+          Math.max(
+            3,
+            gameState.height -
+              obj.size -
+              3
+          )
+        );
+
+      obj.el.style.left =
+        `${obj.x}px`;
+
+      obj.el.style.top =
+        `${obj.y}px`;
+    }
+  );
+
+  if (!gameFinished) {
+
+    gameAnimationId =
+      requestAnimationFrame(
+        gameLoop
+      );
+  }
+}
+
+
+/* =========================================================
+   ЗАПУСК ИГРЫ
+   ========================================================= */
+
+function startMiniGame() {
+
+  if (gameStarted)
+    return;
+
+  gameStarted =
+    true;
+
+  gameFinished =
+    false;
+
+  starScore =
+    0;
+
+  heartScore =
+    0;
+
+  activeObjects.forEach(
+    removeObject
+  );
+
+  activeObjects.clear();
+
+  updateCounters();
+
+  hideOverlay(
+    miniIntro
+  );
+
+  setTimeout(
+    () => {
+
+      showOverlay(
+        gameScreen
+      );
+
+      requestAnimationFrame(
+        () => {
+
+          requestAnimationFrame(
+            () => {
+
+              updateGameSize();
+
+              spawnObject(
+                "star"
+              );
+
+              spawnObject(
+                "heart"
+              );
+
+              lastGameFrame =
+                performance.now();
+
+              gameAnimationId =
+                requestAnimationFrame(
+                  gameLoop
+                );
+            }
+          );
+        }
+      );
+
+    },
+    650
+  );
+}
+
+
+function finishGame() {
+
+  if (gameFinished)
+    return;
+
+  gameFinished =
+    true;
+
+  cancelAnimationFrame(
+    gameAnimationId
+  );
+
+  activeObjects.forEach(
+    obj => {
+
+      obj.el.style.transition =
+        "opacity .45s ease, transform .45s ease";
+
+      obj.el.style.opacity =
+        "0";
+
+      obj.el.style.transform =
+        `${
+          obj.type === "heart"
+            ? "rotate(-45deg) "
+            : ""
+        }scale(.5)`;
+    }
+  );
+
+  setTimeout(
+    () => {
+
+      activeObjects.forEach(
+        removeObject
+      );
+
+      hideOverlay(
+        gameScreen
+      );
+
+      setTimeout(
+        () => {
+
+          completionScreen.classList.remove(
+            "ready"
+          );
+
+          showOverlay(
+            completionScreen
+          );
+
+          setTimeout(
+            () => {
+
+              completionScreen.classList.add(
+                "ready"
+              );
+
+            },
+            250
+          );
+
+        },
+        650
+      );
+
+    },
+    500
+  );
+}
+
+
+gameStartButton.addEventListener(
+  "click",
+  startMiniGame
+);
+
+
+/* =========================================================
+   ТЕКСТ КНИГИ — 4 СТРАНИЦЫ
+   ========================================================= */
+
+const bookPages = [
+
+`Привет, Nora.
+
+Тебе исполнилось 20 лет, и мне очень хотелось сделать этот день для тебя немного особенным.
+
+Я хочу поздравить тебя с днём рождения и пожелать тебе побольше моментов, которые заставляют искренне улыбаться.
+
+Пусть рядом будут люди, с которыми можно быть собой, смеяться до слёз и чувствовать себя спокойно.
+
+И пусть этот новый год твоей жизни принесёт тебе много красивых воспоминаний.`,
+
+`В первую очередь я хочу пожелать тебе счастья.
+
+Не только того, которое видно со стороны, а именно того самого — тихого и настоящего, когда вечером понимаешь, что сегодня был хороший день.
+
+Пусть у тебя хватает сил на всё, что ты задумала, а если иногда сил не хватает — пусть рядом окажется человек, который просто скажет: «Не переживай, всё получится».
+
+Пусть твои мечты постепенно становятся планами, планы — реальностью, а каждый новый шаг приносит тебе что-то хорошее.`,
+
+`Ну а теперь просто хочу ещё раз сказать тебе:
+
+С днём рождения, Nora. ❤️
+
+Пусть тебе будет двадцать, двадцать один или сколько угодно — главное, чтобы с каждым годом ты оставалась такой же настоящей.
+
+Желаю тебе улыбаться чаще, меньше переживать по пустякам и никогда не забывать, насколько много хорошего ты можешь принести в жизнь людей вокруг себя.
+
+Спасибо тебе за все моменты, которые уже были.`,
+
+`И пусть впереди будет ещё намного больше прекрасных историй, которые однажды мы будем вспоминать с улыбкой.
+
+Пусть в твоей жизни будет больше тёплых вечеров, неожиданных счастливых моментов и людей, рядом с которыми хочется оставаться собой.
+
+Я надеюсь, что этот маленький подарок хотя бы ненадолго подарит тебе улыбку.
+
+Береги её.
+
+С днём рождения, Nora. ✨`
+];
+
+
+/* =========================================================
+   ФОТО
+   ========================================================= */
+
+function loadPhotos() {
+
+  const photoIds = [
+    "photo1",
+    "photo2",
+    "photo3",
+    "photo4",
+    "photo5",
+    "photo6",
+    "photo7",
+    "photo8"
+  ];
+
+  photoIds.forEach(
+    (id, index) => {
+
+      const image =
+        document.getElementById(
+          id
+        );
+
+      image.src =
+        PHOTO_FILES[index];
+
+      /*
+        Если фотография не найдена,
+        показываем нейтральный фон,
+        а не ломаем страницу.
+      */
+
+      image.addEventListener(
+        "error",
+        () => {
+
+          image.style.opacity =
+            "0";
+
+          image.parentElement.style.background =
+            "rgba(80,50,20,.08)";
+        }
+      );
+    }
+  );
+}
+
+
+loadPhotos();
+
+
+/* =========================================================
+   ЭЛЕМЕНТЫ КНИГИ
+   ========================================================= */
+
+const pageElements =
+  [
+    ...document.querySelectorAll(
+      ".book-page"
+    )
+  ];
+
+const writingElements =
+  [
+    document.getElementById(
+      "writingText0"
+    ),
+
+    document.getElementById(
+      "writingText1"
+    ),
+
+    document.getElementById(
+      "writingText2"
+    ),
+
+    document.getElementById(
+      "writingText3"
+    )
+  ];
+
+const penElements =
+  [
+    document.getElementById(
+      "pen0"
+    ),
+
+    document.getElementById(
+      "pen1"
+    ),
+
+    document.getElementById(
+      "pen2"
+    ),
+
+    document.getElementById(
+      "pen3"
+    )
+  ];
+
+
+let currentBookPage =
+  0;
+
+let bookWriting =
+  false;
+
+
+/* =========================================================
+   ПОДГОН ТЕКСТА
+   ========================================================= */
+
+function fitPageText(
+  element,
+  text
+) {
+
+  element.textContent =
+    text;
+
+  element.style.visibility =
+    "hidden";
+
+  let low =
+    13;
+
+  let high =
+    window.innerWidth >= 900
+      ? 31
+      : 27;
+
+  let best =
+    low;
+
+  while (
+    low <= high
+  ) {
+
+    const middle =
+      Math.floor(
+        (low + high) / 2
+      );
+
+    element.style.fontSize =
+      middle + "px";
+
+    element.style.lineHeight =
+      middle >= 24
+        ? "1.42"
+        : "1.38";
+
+    const fitsHeight =
+      element.scrollHeight <=
+      element.clientHeight + 2;
+
+    const fitsWidth =
+      element.scrollWidth <=
+      element.clientWidth + 2;
+
+    if (
+      fitsHeight &&
+      fitsWidth
+    ) {
+
+      best =
+        middle;
+
+      low =
+        middle + 1;
+
+    } else {
+
+      high =
+        middle - 1;
+    }
+  }
+
+  element.style.fontSize =
+    best + "px";
+
+  element.style.lineHeight =
+    best >= 24
+      ? "1.42"
+      : "1.38";
+
+  element.style.visibility =
+    "visible";
+}
+
+
+/* =========================================================
+   ПОЗИЦИЯ ПЕРА
+   ========================================================= */
+
+function movePenToChar(
+  pen,
+  char
+) {
+
+  if (!char)
+    return;
+
+  const charRect =
+    char.getBoundingClientRect();
+
+  const writingArea =
+    pen.parentElement;
+
+  const areaRect =
+    writingArea.getBoundingClientRect();
+
+  /*
+    Берём размеры самого SVG без transform.
+    У пера viewBox 240×90, поэтому координаты
+    настоящего кончика — примерно 232×86.
+  */
+  const penWidth =
+    pen.getBoundingClientRect().width;
+
+  const penHeight =
+    pen.getBoundingClientRect().height;
+
+  /*
+    Правый край текущего символа = место,
+    где перо должно закончить штрих.
+    По вертикали берём нижнюю часть строки,
+    ближе к базовой линии рукописного текста.
+  */
+  const targetX =
+    charRect.right -
+    areaRect.left;
+
+  const targetY =
+    charRect.top -
+    areaRect.top +
+    charRect.height *
+    .78;
+
+  /*
+    Кончик пера находится в viewBox примерно
+    в точке (232, 86). Так как transform-origin
+    установлен именно на кончик, поворот на 135°
+    больше не меняет положение точки привязки.
+  */
+  const tipX =
+    penWidth *
+    (232 / 240);
+
+  const tipY =
+    penHeight *
+    (86 / 90);
+
+  pen.style.left =
+    (
+      targetX -
+      tipX
+    ) + "px";
+
+  pen.style.top =
+    (
+      targetY -
+      tipY
+    ) + "px";
+}
+
+
+/* =========================================================
+   ПОДГОТОВКА СТРАНИЦЫ
+   ========================================================= */
+
+function preparePage(
+  index
+) {
+
+  const writing =
+    writingElements[index];
+
+  const pen =
+    penElements[index];
+
+  writing.innerHTML =
+    "";
+
+  pen.style.left =
+    "-300px";
+
+  pen.style.top =
+    "0";
+
+  fitPageText(
+    writing,
+    bookPages[index]
+  );
+
+  writing.innerHTML =
+    "";
+
+  for (
+    const character
+    of bookPages[index]
+  ) {
+
+    const span =
+      document.createElement(
+        "span"
+      );
+
+    span.textContent =
+      character;
+
+    writing.appendChild(
+      span
+    );
+  }
+
+  [
+    ...writing.children
+  ].forEach(
+    span => {
+
+      span.classList.remove(
+        "visible"
+      );
+    }
+  );
+}
+
+
+/* =========================================================
+   ПЕЧАТЬ
+   ========================================================= */
+
+function writePage(
+  index
+) {
+
+  bookWriting =
+    true;
+
+  const writing =
+    writingElements[index];
+
+  const pen =
+    penElements[index];
+
+  const chars =
+    [
+      ...writing.children
+    ];
+
+  let position =
+    0;
+
+  const normalSpeed =
+    window.innerWidth >= 900
+      ? 16
+      : 18;
+
+
+  function writeNext() {
+
+    if (
+      position >=
+      chars.length
+    ) {
+
+      bookWriting =
+        false;
+
+      setTimeout(
+        () => {
+
+          bookNextButton.textContent =
+            index === 3
+              ? "Посмотреть фотографии"
+              : "Следующая страница";
+
+          bookNextButton.classList.add(
+            "visible"
+          );
+
+        },
+        120
+      );
+
+      return;
+    }
+
+    const char =
+      chars[position];
+
+    movePenToChar(
+      pen,
+      char
+    );
+
+    char.classList.add(
+      "visible"
+    );
+
+    position++;
+
+    const value =
+      char.textContent;
+
+    let delay =
+      normalSpeed;
+
+    if (
+      value === "." ||
+      value === "!" ||
+      value === "?"
+    ) {
+
+      delay =
+        75;
+
+    } else if (
+      value === "," ||
+      value === ":" ||
+      value === ";"
+    ) {
+
+      delay =
+        42;
+
+    } else if (
+      value === "\n"
+    ) {
+
+      delay =
+        85;
+    }
+
+    setTimeout(
+      () => {
+
+        requestAnimationFrame(
+          writeNext
+        );
+
+      },
+      delay
+    );
+  }
+
+  writeNext();
+}
+
+
+/* =========================================================
+   НАЧАЛО КНИГИ
+   ========================================================= */
+
+function startCard() {
+
+  hideOverlay(
+    completionScreen
+  );
+
+  setTimeout(
+    () => {
+
+      bookSection.style.display =
+        "flex";
+
+      currentBookPage =
+        0;
+
+      bookWriting =
+        false;
+
+      pageElements.forEach(
+        page => {
+
+          page.classList.remove(
+            "turning"
+          );
+        }
+      );
+
+      bookNextButton.classList.remove(
+        "visible"
+      );
+
+      preparePage(0);
+      preparePage(1);
+      preparePage(2);
+      preparePage(3);
+
+      loadPhotos();
+
+      requestAnimationFrame(
+        () => {
+
+          requestAnimationFrame(
+            () => {
+
+              writePage(0);
+
+              window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+              });
+
+            }
+          );
+        }
+      );
+
+    },
+    650
+  );
+}
+
+
+continueButton.addEventListener(
+  "click",
+  (event) => {
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    /*
+      Эта кнопка относится к завершению игры,
+      а не к перелистыванию книги.
+      Поэтому напрямую запускаем книгу.
+    */
+    completionScreen.classList.remove(
+      "visible"
+    );
+
+    completionScreen.classList.add(
+      "fade-out"
+    );
+
+    completionScreen.style.pointerEvents =
+      "none";
+
+    bookSection.style.display =
+      "flex";
+
+    currentBookPage =
+      0;
+
+    bookWriting =
+      false;
+
+    pageElements.forEach(
+      page => {
+
+        page.classList.remove(
+          "turning"
+        );
+
+      }
+    );
+
+    bookNextButton.classList.remove(
+      "visible"
+    );
+
+    preparePage(0);
+    preparePage(1);
+    preparePage(2);
+    preparePage(3);
+
+    loadPhotos();
+
+    requestAnimationFrame(
+      () => {
+
+        requestAnimationFrame(
+          () => {
+
+            writePage(0);
+
+            window.scrollTo({
+              top: 0,
+              behavior: "smooth"
+            });
+
+          }
+        );
+
+      }
+    );
+
+    setTimeout(
+      () => {
+
+        completionScreen.style.display =
+          "none";
+
+        completionScreen.classList.remove(
+          "fade-out"
+        );
+
+      },
+      600
+    );
+
+  }
+);
+
+
+/* =========================================================
+   ПЕРЕВОРОТ СТРАНИЦ
+   ========================================================= */
+
+bookNextButton.addEventListener(
+  "click",
+  () => {
+
+    if (bookWriting)
+      return;
+
+    /*
+      Страница 5 уже открыта.
+      Следующее нажатие —
+      переход к торту.
+    */
+
+    if (
+      currentBookPage === 5
+    ) {
+
+      goToCake();
+
+      return;
+    }
+
+    bookNextButton.classList.remove(
+      "visible"
+    );
+
+    const currentPage =
+      pageElements[
+        currentBookPage
+      ];
+
+    currentPage.classList.add(
+      "turning"
+    );
+
+    const nextIndex =
+      currentBookPage + 1;
+
+    /*
+      После 4-й страницы
+      открывается 5-я фотографическая.
+    */
+
+    if (
+      nextIndex === 4
+    ) {
+
+      setTimeout(
+        () => {
+
+          currentBookPage =
+            4;
+
+          bookNextButton.textContent = "Следующая страница";
+
+          bookNextButton.classList.add(
+            "visible"
+          );
+
+        },
+        900
+      );
+
+      return;
+    }
+
+if (
+      nextIndex === 5
+    ) {
+
+      setTimeout(
+        () => {
+
+          currentBookPage = 5;
+
+          bookNextButton.textContent = "Перейти к поздравлению";
+
+          bookNextButton.classList.add(
+            "visible"
+          );
+
+        },
+        900
+      );
+
+      return;
+    }
+
+    setTimeout(
+      () => {
+
+        currentBookPage =
+          nextIndex;
+
+        writePage(
+          currentBookPage
+        );
+
+      },
+      900
+    );
+  }
+);
+
+
+/* =========================================================
+   ПЕРЕХОД К ТОРТУ
+   ========================================================= */
+
+function goToCake() {
+
+  bookSection.style.display =
+    "none";
+
+  separator.style.display =
+    "block";
+
+  cake.style.display =
+    "flex";
+
+  setTimeout(
+    () => {
+
+      cake.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+      });
+
+    },
+    150
+  );
+
+  setTimeout(
+    burstConfetti,
+    1800
+  );
+}
+
+
+/* =========================================================
+   КОНФЕТТИ
+   ========================================================= */
+
+function burstConfetti() {
+
+  const colors = [
+    "#ff69b4",
+    "#ff8fc7",
+    "#ffb6c1",
+    "#ffd700",
+    "#fff"
+  ];
+
+  for (
+    let c = 0;
+    c < 80;
+    c++
+  ) {
+
+    confetti.push({
+
+      x:
+        Math.random() *
+        window.innerWidth,
+
+      y:
+        -20,
+
+      r:
+        Math.random() *
+        6 +
+        4,
+
+      color:
+        colors[
+          Math.floor(
+            Math.random() *
+            colors.length
+          )
+        ],
+
+      speedY:
+        Math.random() *
+        3 +
+        2,
+
+      speedX:
+        Math.random() *
+        4 -
+        2,
+
+      rotation:
+        Math.random() *
+        360,
+
+      rotationSpeed:
+        Math.random() *
+        4 -
+        2
+    });
+  }
+}
+
+
+function drawConfetti() {
+
+  confettiCtx.clearRect(
+    0,
+    0,
+    window.innerWidth,
+    window.innerHeight
+  );
+
+  for (
+    let index =
+      confetti.length - 1;
+
+    index >= 0;
+
+    index--
+  ) {
+
+    const p =
+      confetti[index];
+
+    p.y +=
+      p.speedY;
+
+    p.x +=
+      p.speedX;
+
+    p.rotation +=
+      p.rotationSpeed;
+
+    confettiCtx.save();
+
+    confettiCtx.translate(
+      p.x,
+      p.y
+    );
+
+    confettiCtx.rotate(
+      p.rotation *
+      Math.PI /
+      180
+    );
+
+    confettiCtx.fillStyle =
+      p.color;
+
+    confettiCtx.fillRect(
+      -p.r / 2,
+      -p.r / 2,
+      p.r,
+      p.r
+    );
+
+    confettiCtx.restore();
+
+    if (
+      p.y >
+      window.innerHeight +
+      20
+    ) {
+
+      confetti.splice(
+        index,
+        1
+      );
+    }
+  }
+
+  requestAnimationFrame(
+    drawConfetti
+  );
+}
+
+
+drawConfetti();
+
+
+/* =========================================================
+   СВЕЧА
+   ========================================================= */
+
+let candleBlown =
+  false;
+
+
+function blowOutCandle() {
+
+  if (candleBlown)
+    return;
+
+  candleBlown =
+    true;
+
+  flame.style.display =
+    "none";
+
+  smoke.classList.remove(
+    "active-smoke"
+  );
+
+  void smoke.offsetWidth;
+
+  smoke.classList.add(
+    "active-smoke"
+  );
+
+  hint.innerHTML =
+    "Желание обязательно исполнится! ✨";
+
+  burstConfetti();
+
+  setTimeout(
+    burstConfetti,
+    500
+  );
+}
+
+
+candle.addEventListener(
+  "click",
+  blowOutCandle
+);
+
+</script>
+
+</body>
+</html>
