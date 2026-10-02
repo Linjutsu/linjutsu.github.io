@@ -351,7 +351,7 @@
       <div class="book-page" data-page="6">
         <div class="page-content">
           <div class="page-writing">
-            <div class="writing-text" id="writingText4"></div>
+            <div class="writing-text" id="writingText6"></div>
           </div>
           <div class="page-number">— 7 —</div>
         </div>
@@ -536,6 +536,7 @@
       </div>
 
       <div class="book-controls">
+        <button class="book-button" id="bookPrevButton" type="button">Предыдущая страница</button>
         <button class="book-button" id="bookNextButton" type="button">Следующая страница</button>
       </div>
 
@@ -710,6 +711,9 @@ const bookSection =
 
 const book =
   document.getElementById("book");
+
+const bookPrevButton =
+  document.getElementById("bookPrevButton");
 
 const bookNextButton =
   document.getElementById("bookNextButton");
@@ -2818,7 +2822,13 @@ function preparePage(index) {
    ПЕЧАТЬ
    ========================================================= */
 
-function showNextButton() {
+function updateBookNavigation() {
+
+  if (currentBookPage > 0) {
+    bookPrevButton.classList.add("visible");
+  } else {
+    bookPrevButton.classList.remove("visible");
+  }
 
   bookNextButton.textContent =
     currentBookPage === pageElements.length - 1
@@ -2826,6 +2836,10 @@ function showNextButton() {
       : "Следующая страница";
 
   bookNextButton.classList.add("visible");
+}
+
+function showNextButton() {
+  updateBookNavigation();
 }
 
 
@@ -2915,6 +2929,7 @@ function startCard() {
       );
 
       bookNextButton.classList.remove("visible");
+      bookPrevButton.classList.remove("visible");
 
       textPageIndexes.forEach(index =>
         preparePage(index)
@@ -2964,6 +2979,7 @@ bookNextButton.addEventListener(
     }
 
     bookNextButton.classList.remove("visible");
+    bookPrevButton.classList.remove("visible");
 
     const currentPage =
       pageElements[currentBookPage];
@@ -2987,6 +3003,48 @@ bookNextButton.addEventListener(
         } else {
           showPhotoPage();
         }
+
+      },
+      900
+    );
+  }
+);
+
+
+bookPrevButton.addEventListener(
+  "click",
+  () => {
+
+    if (bookWriting || currentBookPage === 0)
+      return;
+
+    bookNextButton.classList.remove("visible");
+    bookPrevButton.classList.remove("visible");
+
+    const previousIndex =
+      currentBookPage - 1;
+
+    // Возвращаем предыдущую страницу из состояния переворота.
+    pageElements[previousIndex].classList.remove("turning");
+    currentBookPage = previousIndex;
+
+    setTimeout(
+      () => {
+
+        const previousText =
+          pageElements[currentBookPage].querySelector(".writing-text");
+
+        if (previousText) {
+          preparePage(currentBookPage);
+          writePage(currentBookPage);
+        } else {
+          showPhotoPage();
+        }
+
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth"
+        });
 
       },
       900

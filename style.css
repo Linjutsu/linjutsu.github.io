@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Bad+Script&display=swap");
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -1112,17 +1114,7 @@ canvas {
 
   color: #3b241a;
 
-  font-family:
-    "URW Chancery L",
-    "Apple Chancery",
-    "Snell Roundhand",
-    "Segoe Script",
-    "Brush Script MT",
-    "Kunstler Script",
-    "Lucida Calligraphy",
-    "Monotype Corsiva",
-    "Comic Sans MS",
-    cursive;
+  font-family: "Bad Script", cursive;
 
   font-style: italic;
 
@@ -1176,12 +1168,7 @@ canvas {
 
   color: #563525;
 
-  font-family:
-    "URW Chancery L",
-    "Apple Chancery",
-    "Snell Roundhand",
-    "Segoe Script",
-    cursive;
+  font-family: "Bad Script", cursive;
 
   font-style: italic;
 
@@ -1277,12 +1264,7 @@ canvas {
 
   color: #4a2d20;
 
-  font-family:
-    "URW Chancery L",
-    "Apple Chancery",
-    "Snell Roundhand",
-    "Segoe Script",
-    cursive;
+  font-family: "Bad Script", cursive;
 
   font-size:
     clamp(12px, 2vw, 17px);
@@ -1354,12 +1336,7 @@ canvas {
   width: 100%;
   flex: 0 0 auto;
   color: #4a2d20;
-  font-family:
-    "URW Chancery L",
-    "Apple Chancery",
-    "Snell Roundhand",
-    "Segoe Script",
-    cursive;
+  font-family: "Bad Script", cursive;
   font-size: clamp(13px, 2.2vw, 18px);
   font-style: italic;
   line-height: 1.25;
@@ -2210,4 +2187,41 @@ canvas {
 .final-page-writing .writing-text {
   width: 100%;
   text-align: center;
+}
+
+
+/* Финальная 21-я страница: фраза строго по центру книги. */
+.final-page-writing {
+  flex: 1;
+  width: 100%;
+  min-height: 0;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+}
+
+.final-page-writing .writing-text {
+  width: 100%;
+  height: auto;
+  max-height: 70%;
+  text-align: center !important;
+  overflow: visible;
+}
+
+/* Две кнопки навигации располагаются рядом под книгой. */
+#book-section > .book-controls {
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 600px) {
+  #book-section > .book-controls {
+    gap: 8px;
+  }
+  #book-section > .book-controls .book-button {
+    min-width: min(44vw, 225px);
+    padding: 12px 16px;
+    font-size: 16px;
+  }
 }
