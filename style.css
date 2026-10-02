@@ -966,7 +966,7 @@ canvas {
 }
 
 /* =========================================================
-   5 СТРАНИЦ
+   20 СТРАНИЦ
    ========================================================= */
 
 .book-page {
@@ -1012,25 +1012,26 @@ canvas {
     rgba(130,80,40,.25);
 }
 
-.book-page:nth-child(1) {
-  z-index: 5;
-}
-
-.book-page:nth-child(2) {
-  z-index: 4;
-}
-
-.book-page:nth-child(3) {
-  z-index: 3;
-}
-
-.book-page:nth-child(4) {
-  z-index: 2;
-}
-
-.book-page:nth-child(5) {
-  z-index: 1;
-}
+.book-page[data-page="0"] { z-index: 20; }
+.book-page[data-page="1"] { z-index: 19; }
+.book-page[data-page="2"] { z-index: 18; }
+.book-page[data-page="3"] { z-index: 17; }
+.book-page[data-page="4"] { z-index: 16; }
+.book-page[data-page="5"] { z-index: 15; }
+.book-page[data-page="6"] { z-index: 14; }
+.book-page[data-page="7"] { z-index: 13; }
+.book-page[data-page="8"] { z-index: 12; }
+.book-page[data-page="9"] { z-index: 11; }
+.book-page[data-page="10"] { z-index: 10; }
+.book-page[data-page="11"] { z-index: 9; }
+.book-page[data-page="12"] { z-index: 8; }
+.book-page[data-page="13"] { z-index: 7; }
+.book-page[data-page="14"] { z-index: 6; }
+.book-page[data-page="15"] { z-index: 5; }
+.book-page[data-page="16"] { z-index: 4; }
+.book-page[data-page="17"] { z-index: 3; }
+.book-page[data-page="18"] { z-index: 2; }
+.book-page[data-page="19"] { z-index: 1; }
 
 .book-page.turning {
   transform:
@@ -1294,6 +1295,117 @@ canvas {
 
   padding:
     4px 8px;
+}
+
+/* =========================================================
+   НОВЫЙ СТИЛЬ ФОТО-СТРАНИЦ — 2 ФОТО + 3 СЛОВА
+   ========================================================= */
+
+.new-photo-page-content {
+  padding: clamp(28px, 4vw, 48px) clamp(26px, 5vw, 65px) 22px;
+}
+
+.new-photo-stack {
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(14px, 3vh, 26px);
+}
+
+.new-photo-item {
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.new-photo-frame {
+  width: min(68%, 360px);
+  flex: 1;
+  min-height: 0;
+  padding: 6px;
+  background: #f8edcf;
+  border: 1px solid rgba(100,60,30,.35);
+  box-shadow: 0 4px 12px rgba(50,25,10,.22);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.new-photo-frame img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  background: rgba(80,50,20,.08);
+  opacity: 0;
+  transition: opacity .2s ease;
+}
+
+.new-photo-words {
+  width: 100%;
+  flex: 0 0 auto;
+  color: #4a2d20;
+  font-family:
+    "URW Chancery L",
+    "Apple Chancery",
+    "Snell Roundhand",
+    "Segoe Script",
+    cursive;
+  font-size: clamp(13px, 2.2vw, 18px);
+  font-style: italic;
+  line-height: 1.25;
+  text-align: center;
+}
+
+/* Кнопка находится после .book, а не поверх страниц. */
+.book-controls {
+  width: min(860px, 88vw) !important;
+  height: 82px;
+  margin: 18px auto 0 !important;
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  position: relative !important;
+  top: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  left: auto !important;
+  transform: none !important;
+  z-index: 100;
+}
+
+@media (max-width: 600px) {
+  .new-photo-page-content {
+    padding: 20px 18px 18px;
+  }
+
+  .new-photo-frame {
+    width: 78%;
+    padding: 4px;
+  }
+
+  .book-controls {
+    width: 92vw !important;
+    height: 76px;
+    margin-top: 12px !important;
+  }
+}
+
+@media (min-width: 900px) {
+  .book-controls {
+    width: min(900px, 82vw) !important;
+    height: 88px;
+    margin-top: 22px !important;
+  }
 }
 
 /* =========================================================
