@@ -2199,3 +2199,15 @@ canvas {
     margin-top: 22px !important;
   }
 }
+
+/* Финальная 21-я страница */
+.final-page-writing {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.final-page-writing .writing-text {
+  width: 100%;
+  text-align: center;
+}
