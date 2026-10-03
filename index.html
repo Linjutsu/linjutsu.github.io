@@ -536,8 +536,8 @@
       </div>
 
       <div class="book-controls">
-        <button class="book-button" id="bookPrevButton" type="button">Предыдущая страница</button>
         <button class="book-button" id="bookNextButton" type="button">Следующая страница</button>
+        <button class="book-button" id="bookPrevButton" type="button">Предыдущая страница</button>
       </div>
 
 </section>
@@ -597,6 +597,39 @@
         и коснись огонька 💫
       </div>
 
+    </div>
+
+    <!-- =====================================================
+         ФИНАЛЬНЫЙ ЭКРАН
+         Фото: photos/final-photo.jpg
+         Песня: music/final-song.mp3
+         ===================================================== -->
+    <div class="final-song-screen" id="finalSongScreen">
+      <div class="final-photo-frame">
+        <img
+          id="finalPhoto"
+          class="final-photo"
+          src="photos/final-photo.jpg"
+          alt="Финальная фотография"
+        >
+      </div>
+
+      <div class="final-song-text">
+        хоть ты и слышала этот кавер, но хочу чтобы ты знала
+      </div>
+
+      <button
+        class="final-song-button"
+        id="finalSongButton"
+        type="button">
+        Включить финальную песню
+      </button>
+
+      <audio
+        id="finalMusic"
+        preload="auto"
+        src="music/final-song.mp3">
+      </audio>
     </div>
 
   </div>
@@ -675,6 +708,15 @@ const smoke =
 
 const hint =
   document.getElementById("hint");
+
+const finalSongScreen =
+  document.getElementById("finalSongScreen");
+
+const finalSongButton =
+  document.getElementById("finalSongButton");
+
+const finalMusic =
+  document.getElementById("finalMusic");
 
 const miniIntro =
   document.getElementById("mini-intro");
@@ -2722,6 +2764,9 @@ const textPageIndexes =
 let currentBookPage = 0;
 let bookWriting = false;
 
+// Страницы, которые уже были напечатаны. При возврате текст показывается сразу.
+const typedPages = new Set();
+
 
 /* =========================================================
    ПОДГОН ТЕКСТА
@@ -2843,7 +2888,34 @@ function showNextButton() {
 }
 
 
+function showPageImmediately(index) {
+
+  const writing =
+    document.getElementById(
+      `writingText${index}`
+    );
+
+  if (!writing) {
+    bookWriting = false;
+    showNextButton();
+    return;
+  }
+
+  [...writing.children].forEach(
+    span => span.classList.add("visible")
+  );
+
+  bookWriting = false;
+  showNextButton();
+}
+
+
 function writePage(index) {
+
+  if (typedPages.has(index)) {
+    showPageImmediately(index);
+    return;
+  }
 
   bookWriting = true;
 
@@ -2869,6 +2941,7 @@ function writePage(index) {
   function writeNext() {
 
     if (position >= chars.length) {
+      typedPages.add(index);
       bookWriting = false;
       setTimeout(showNextButton, 120);
       return;
@@ -2897,7 +2970,6 @@ function writePage(index) {
 
   writeNext();
 }
-
 
 /* =========================================================
    ПОКАЗ ФОТО-СТРАНИЦЫ
@@ -3069,6 +3141,15 @@ function goToCake() {
   cake.style.display =
     "flex";
 
+  candleBlown = false;
+  flame.style.display = "block";
+  hint.innerHTML =
+    "Загадай желание<br>и коснись огонька 💫";
+
+  finalSongScreen.style.display = "none";
+  finalMusic.pause();
+  finalMusic.currentTime = 0;
+
   const cakePhotoWrap =
     document.getElementById(
       "cakePhotoWrap"
@@ -3090,6 +3171,34 @@ function goToCake() {
     },
     150
   );
+}
+
+
+function showFinalSongScreen() {
+
+  const cakePhotoWrap =
+    document.getElementById(
+      "cakePhotoWrap"
+    );
+
+  if (cakePhotoWrap) {
+    cakePhotoWrap.style.opacity = "0";
+  }
+
+  cake.style.display = "none";
+
+  setTimeout(() => {
+    if (cakePhotoWrap) {
+      cakePhotoWrap.style.display = "none";
+    }
+
+    separator.style.display = "none";
+    finalSongScreen.style.display = "flex";
+    finalSongScreen.scrollIntoView({
+      behavior: "smooth",
+      block: "center"
+    });
+  }, 250);
 }
 
 
@@ -3289,33 +3398,57 @@ function blowOutCandle() {
 
   if (cakePhotoWrap && cakePhoto) {
 
-    cakePhoto.onload =
-      () => {
-        cakePhotoWrap.style.display =
-          "flex";
+    let finalTransitionStarted = false;
 
-        requestAnimationFrame(() => {
-          cakePhotoWrap.style.opacity =
-            "1";
-        });
-      };
+    const startFinalTransition = () => {
+      if (finalTransitionStarted)
+        return;
 
-    cakePhoto.onerror =
-      () => {
-        cakePhotoWrap.style.display =
-          "none";
-      };
+      finalTransitionStarted = true;
+
+      // Фото появляется практически сразу после задувания свечи.
+      cakePhotoWrap.style.display = "flex";
+      requestAnimationFrame(() => {
+        cakePhotoWrap.style.opacity = "1";
+      });
+
+      // Затем торт и фото автоматически исчезают.
+      setTimeout(showFinalSongScreen, 3200);
+    };
+
+    cakePhoto.onload = startFinalTransition;
+
+    cakePhoto.onerror = () => {
+      // Даже если фото ещё не добавлено, финальный экран всё равно появится.
+      setTimeout(showFinalSongScreen, 1000);
+    };
 
     cakePhoto.src =
       cakePhoto.dataset.src ||
       "photos/cake-photo.jpg";
+  } else {
+    setTimeout(showFinalSongScreen, 1000);
   }
 }
+
 
 
 candle.addEventListener(
   "click",
   blowOutCandle
+);
+
+
+finalSongButton.addEventListener(
+  "click",
+  async () => {
+    try {
+      await finalMusic.play();
+      finalSongButton.textContent = "Финальная песня играет ❤️";
+    } catch (error) {
+      finalSongButton.textContent = "Нажми ещё раз, чтобы включить песню";
+    }
+  }
 );
 
 </script>
