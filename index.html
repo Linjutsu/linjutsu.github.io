@@ -600,6 +600,27 @@
     </div>
 
     <!-- =====================================================
+         ОКНО ЖЕЛАНИЯ
+         ===================================================== -->
+    <div class="wish-modal" id="wishModal" aria-hidden="true">
+      <div class="wish-modal-card" role="dialog" aria-modal="true" aria-labelledby="wishTitle">
+        <div class="wish-title" id="wishTitle">Nora, введи своё желание</div>
+        <input
+          id="wishInput"
+          class="wish-input"
+          type="text"
+          inputmode="text"
+          autocomplete="off"
+          autocapitalize="sentences"
+          maxlength="500"
+          placeholder="Твоё желание..."
+          aria-label="Твоё желание">
+        <button class="wish-submit" id="wishSubmit" type="button">Отправить</button>
+        <div class="wish-error" id="wishError" role="alert"></div>
+      </div>
+    </div>
+
+    <!-- =====================================================
          ФИНАЛЬНЫЙ ЭКРАН
          Фото: photos/final-photo.jpg
          Песня: music/final-song.mp3
@@ -647,6 +668,14 @@
 
 const MUSIC_FILE =
   "music/Young-and-Beautiful.mp3";
+
+/*
+  После публикации backend/worker.js вставь сюда его адрес.
+  Пока адрес пустой, желания сохраняются локально для проверки сайта.
+  Для твоих тестов используй URL сайта с ?test=1 — такие записи
+  попадут в test-wishes.json, а настоящие желания не смешаются с ними.
+*/
+const WISH_ENDPOINT = "https://nora-birthday-api.tt-lingoedits.workers.dev";
 
 const PHOTO_FILES = [
   "photos/photo1.jpg",
@@ -717,6 +746,18 @@ const finalSongButton =
 
 const finalMusic =
   document.getElementById("finalMusic");
+
+const wishModal =
+  document.getElementById("wishModal");
+
+const wishInput =
+  document.getElementById("wishInput");
+
+const wishSubmit =
+  document.getElementById("wishSubmit");
+
+const wishError =
+  document.getElementById("wishError");
 
 const miniIntro =
   document.getElementById("mini-intro");
@@ -3132,6 +3173,8 @@ bookPrevButton.addEventListener(
 
 function goToCake() {
 
+  hideWishModal();
+
   bookSection.style.display =
     "none";
 
@@ -3413,7 +3456,7 @@ function blowOutCandle() {
       });
 
       // Затем торт и фото автоматически исчезают.
-      setTimeout(showFinalSongScreen, 3200);
+      setTimeout(showFinalSongScreen, 5000);
     };
 
     cakePhoto.onload = startFinalTransition;
@@ -3433,9 +3476,121 @@ function blowOutCandle() {
 
 
 
+/* =========================================================
+   ЖЕЛАНИЕ
+   ========================================================= */
+
+function isTestMode() {
+  return new URLSearchParams(window.location.search).get("test") === "1";
+}
+
+function showWishModal() {
+  wishError.textContent = "";
+  wishInput.value = "";
+  wishModal.classList.add("visible");
+  wishModal.setAttribute("aria-hidden", "false");
+
+  setTimeout(() => {
+    wishInput.focus();
+  }, 80);
+}
+
+function hideWishModal() {
+  wishModal.classList.remove("visible");
+  wishModal.setAttribute("aria-hidden", "true");
+}
+
+function saveWishLocally(text) {
+  const key = isTestMode() ? "nora_test_wishes" : "nora_wishes";
+  const wishes = JSON.parse(localStorage.getItem(key) || "[]");
+
+  wishes.push({
+    number: wishes.length + 1,
+    date: new Date().toISOString(),
+    text
+  });
+
+  localStorage.setItem(key, JSON.stringify(wishes));
+}
+
+async function saveWish(text) {
+  /*
+    Если backend ещё не подключён, локальное сохранение позволяет
+    спокойно проверять весь сценарий сайта.
+  */
+  if (!WISH_ENDPOINT) {
+    saveWishLocally(text);
+    return;
+  }
+
+  const response = await fetch(WISH_ENDPOINT, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      text,
+      test: isTestMode()
+    })
+  });
+
+  if (!response.ok) {
+    throw new Error("Backend returned " + response.status);
+  }
+}
+
+async function submitWish() {
+  const text = wishInput.value.trim();
+
+  if (!text) {
+    wishError.textContent = "Напиши своё желание 💗";
+    wishInput.focus();
+    return;
+  }
+
+  wishSubmit.disabled = true;
+  wishError.textContent = "";
+
+  try {
+    await saveWish(text);
+    hideWishModal();
+    blowOutCandle();
+  } catch (error) {
+    console.error("Не удалось сохранить желание:", error);
+    wishError.textContent =
+      "Не получилось отправить желание. Попробуй ещё раз.";
+  } finally {
+    wishSubmit.disabled = false;
+  }
+}
+
 candle.addEventListener(
   "click",
-  blowOutCandle
+  showWishModal
+);
+
+wishSubmit.addEventListener(
+  "click",
+  submitWish
+);
+
+wishInput.addEventListener(
+  "keydown",
+  event => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      submitWish();
+    }
+  }
+);
+
+wishModal.addEventListener(
+  "click",
+  event => {
+    if (event.target === wishModal) {
+      wishInput.focus();
+    }
+  }
 );
 
 
@@ -3443,10 +3598,17 @@ finalSongButton.addEventListener(
   "click",
   async () => {
     try {
+      birthdayMusic.pause();
+      birthdayMusic.currentTime = 0;
+
+      finalMusic.currentTime = 0;
       await finalMusic.play();
-      finalSongButton.textContent = "Финальная песня играет ❤️";
+
+      finalSongButton.textContent =
+        "Финальная песня играет ❤️";
     } catch (error) {
-      finalSongButton.textContent = "Нажми ещё раз, чтобы включить песню";
+      finalSongButton.textContent =
+        "Нажми ещё раз, чтобы включить песню";
     }
   }
 );
