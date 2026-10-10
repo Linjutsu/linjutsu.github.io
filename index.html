@@ -551,20 +551,33 @@
     </div>
 
     <!-- =====================================================
-         ФОТОГРАФИЯ, СВЯЗАННАЯ С ТОРТОМ
-         Файл: photos/cake-photo.jpg
+         ВИДЕО ПОСЛЕ ЗАГАДЫВАНИЯ ЖЕЛАНИЯ
+         Файл: Bangchan.mp4
          ===================================================== -->
 
-    <div
-      class="cake-photo-wrap"
-      id="cakePhotoWrap">
+    <div class="wish-video-wrap" id="wishVideoWrap" aria-live="polite">
+      <video
+        id="wishVideo"
+        class="wish-video"
+        src="photos/Bangchan.mp4"
+        autoplay
+        loop
+        playsinline
+        webkit-playsinline
+        preload="auto"
+        disablepictureinpicture
+        controlslist="nodownload noplaybackrate noremoteplayback"
+        tabindex="-1"
+        aria-label="Видео">
+      </video>
 
-      <img
-        id="cakePhoto"
-        class="cake-photo"
-        data-src="photos/cake-photo.jpg"
-        alt="Фотография, связанная с тортом">
+      <div class="wish-video-message">
+        Твое желание обязательно исполнится
+      </div>
 
+      <div class="wish-countdown" id="wishCountdown" aria-label="Обратный отсчёт">
+        15
+      </div>
     </div>
 
 
@@ -758,6 +771,15 @@ const wishSubmit =
 
 const wishError =
   document.getElementById("wishError");
+
+const wishVideoElement =
+  document.getElementById("wishVideo");
+
+if (wishVideoElement) {
+  wishVideoElement.addEventListener("contextmenu", event => {
+    event.preventDefault();
+  });
+}
 
 const miniIntro =
   document.getElementById("mini-intro");
@@ -3070,7 +3092,27 @@ function startCard() {
 }
 
 
-continueButton.onclick = startCard;
+continueButton.onclick = () => {
+  /*
+    При переходе к поздравлению останавливаем Young And Beautiful
+    и запускаем Honeybee. Смена происходит непосредственно
+    по нажатию пользователя, чтобы мобильный браузер разрешил звук.
+  */
+  birthdayMusic.pause();
+  birthdayMusic.currentTime = 0;
+  birthdayMusic.src = new URL("music/Honeybee.mp3", document.baseURI).href;
+  birthdayMusic.loop = true;
+  birthdayMusic.load();
+
+  const honeybeePlayback = birthdayMusic.play();
+  if (honeybeePlayback && typeof honeybeePlayback.catch === "function") {
+    honeybeePlayback.catch(error => {
+      console.warn("Не удалось автоматически запустить Honeybee:", error);
+    });
+  }
+
+  startCard();
+};
 continueButton.style.pointerEvents = "auto";
 continueButton.style.touchAction = "manipulation";
 
@@ -3193,16 +3235,25 @@ function goToCake() {
   finalMusic.pause();
   finalMusic.currentTime = 0;
 
-  const cakePhotoWrap =
-    document.getElementById(
-      "cakePhotoWrap"
-    );
+  const wishVideoWrap =
+    document.getElementById("wishVideoWrap");
+  const wishVideo =
+    document.getElementById("wishVideo");
+  const wishCountdown =
+    document.getElementById("wishCountdown");
 
-  if (cakePhotoWrap) {
-    cakePhotoWrap.style.display =
-      "none";
-    cakePhotoWrap.style.opacity =
-      "0";
+  if (wishVideoWrap) {
+    wishVideoWrap.style.display = "none";
+    wishVideoWrap.style.opacity = "0";
+  }
+
+  if (wishVideo) {
+    wishVideo.pause();
+    wishVideo.currentTime = 0;
+  }
+
+  if (wishCountdown) {
+    wishCountdown.textContent = "15";
   }
 
   setTimeout(
@@ -3218,21 +3269,24 @@ function goToCake() {
 
 
 function showFinalSongScreen() {
+  const wishVideoWrap =
+    document.getElementById("wishVideoWrap");
+  const wishVideo =
+    document.getElementById("wishVideo");
 
-  const cakePhotoWrap =
-    document.getElementById(
-      "cakePhotoWrap"
-    );
+  if (wishVideoWrap) {
+    wishVideoWrap.style.opacity = "0";
+  }
 
-  if (cakePhotoWrap) {
-    cakePhotoWrap.style.opacity = "0";
+  if (wishVideo) {
+    wishVideo.pause();
   }
 
   cake.style.display = "none";
 
   setTimeout(() => {
-    if (cakePhotoWrap) {
-      cakePhotoWrap.style.display = "none";
+    if (wishVideoWrap) {
+      wishVideoWrap.style.display = "none";
     }
 
     separator.style.display = "none";
@@ -3243,7 +3297,6 @@ function showFinalSongScreen() {
     });
   }, 250);
 }
-
 
 /* =========================================================
    КОНФЕТТИ
@@ -3399,86 +3452,80 @@ let candleBlown =
 
 
 function blowOutCandle() {
-
   if (candleBlown)
     return;
 
-  candleBlown =
-    true;
+  candleBlown = true;
 
-  flame.style.display =
-    "none";
+  flame.style.display = "none";
 
-  smoke.classList.remove(
-    "active-smoke"
-  );
-
+  smoke.classList.remove("active-smoke");
   void smoke.offsetWidth;
+  smoke.classList.add("active-smoke");
 
-  smoke.classList.add(
-    "active-smoke"
-  );
-
-  hint.innerHTML =
-    "Желание обязательно исполнится! ✨";
+  hint.innerHTML = "Желание обязательно исполнится! ✨";
 
   burstConfetti();
+  setTimeout(burstConfetti, 500);
 
-  setTimeout(
-    burstConfetti,
-    500
-  );
+  const wishVideoWrap =
+    document.getElementById("wishVideoWrap");
+  const wishVideo =
+    document.getElementById("wishVideo");
+  const wishCountdown =
+    document.getElementById("wishCountdown");
 
-  const cakePhotoWrap =
-    document.getElementById(
-      "cakePhotoWrap"
-    );
+  // Сохраняем эффекты задувания свечи, затем убираем торт
+  // и показываем видео с надписью и обратным отсчётом.
+  setTimeout(() => {
+    cake.style.display = "none";
 
-  const cakePhoto =
-    document.getElementById(
-      "cakePhoto"
-    );
-
-  if (cakePhotoWrap && cakePhoto) {
-
-    let finalTransitionStarted = false;
-
-    const startFinalTransition = () => {
-      if (finalTransitionStarted)
-        return;
-
-      finalTransitionStarted = true;
-
-      // Фото появляется практически сразу после задувания свечи.
-      cakePhotoWrap.style.display = "flex";
+    if (wishVideoWrap) {
+      wishVideoWrap.style.display = "flex";
       requestAnimationFrame(() => {
-        cakePhotoWrap.style.opacity = "1";
+        wishVideoWrap.style.opacity = "1";
       });
+    }
 
-      // Затем торт и фото автоматически исчезают.
-      setTimeout(showFinalSongScreen, 5000);
-    };
+    // Останавливаем Honeybee в момент начала видео, чтобы его звук
+    // не перекрывал аудиодорожку самого видео.
+    if (birthdayMusic) {
+      birthdayMusic.pause();
+      birthdayMusic.currentTime = 0;
+    }
 
-    cakePhoto.onload = startFinalTransition;
+    if (wishVideo) {
+      wishVideo.currentTime = 0;
+      wishVideo.muted = false;
+      wishVideo.volume = 1;
+      const playback = wishVideo.play();
+      if (playback && typeof playback.catch === "function") {
+        playback.catch(error => {
+          console.warn("Видео не удалось запустить автоматически:", error);
+        });
+      }
+    }
 
-    cakePhoto.onerror = () => {
-      // Даже если фото ещё не добавлено, финальный экран всё равно появится.
-      setTimeout(showFinalSongScreen, 1000);
-    };
+    let remaining = 15;
+    if (wishCountdown) {
+      wishCountdown.textContent = String(remaining);
+    }
 
-    cakePhoto.src =
-      cakePhoto.dataset.src ||
-      "photos/cake-photo.jpg";
-  } else {
-    setTimeout(showFinalSongScreen, 1000);
-  }
+    const countdownTimer = setInterval(() => {
+      remaining -= 1;
+
+      if (wishCountdown) {
+        wishCountdown.textContent = String(Math.max(remaining, 0));
+      }
+
+      if (remaining <= 0) {
+        clearInterval(countdownTimer);
+        showFinalSongScreen();
+      }
+    }, 1000);
+  }, 1500);
 }
 
-
-
-/* =========================================================
-   ЖЕЛАНИЕ
-   ========================================================= */
 
 function isTestMode() {
   return new URLSearchParams(window.location.search).get("test") === "1";

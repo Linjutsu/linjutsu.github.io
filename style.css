@@ -2435,3 +2435,56 @@ canvas {
   font-size: 18px;
   line-height: 1.2;
 }
+
+
+/* =========================================================
+   ВИДЕО И ОБРАТНЫЙ ОТСЧЁТ ПОСЛЕ ЗАГАДЫВАНИЯ ЖЕЛАНИЯ
+   ========================================================= */
+
+.wish-video-wrap {
+  display: none;
+  width: min(78vw, 360px);
+  margin: 0 auto 28px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  opacity: 0;
+  transition: opacity .25s ease;
+  position: relative;
+  z-index: 6;
+}
+
+.wish-video {
+  display: block;
+  width: 100%;
+  max-height: min(55vh, 480px);
+  object-fit: contain;
+  border-radius: 16px;
+  box-shadow: 0 0 20px rgba(255, 105, 180, .22);
+  pointer-events: none !important;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.wish-video-message {
+  width: 100%;
+  color: #ff9dcc;
+  font-family: Arial, sans-serif;
+  font-size: clamp(16px, 4vw, 21px);
+  line-height: 1.4;
+  text-align: center;
+  text-shadow: 0 0 7px rgba(255, 143, 199, .35);
+  pointer-events: none;
+}
+
+.wish-countdown {
+  color: #ffb0d5;
+  font-family: Arial, sans-serif;
+  font-size: clamp(24px, 6vw, 32px);
+  line-height: 1.2;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+}
