@@ -2340,6 +2340,10 @@ canvas {
   object-fit: contain;
   border-radius: 6px;
   background: #08040b;
+  pointer-events: none !important;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
 }
 
 .nora-end-message {
@@ -2527,8 +2531,10 @@ canvas {
   display: block;
   width: 100%;
   height: auto;
+  aspect-ratio: 9 / 16;
   max-height: min(55vh, 480px);
-  object-fit: contain;
+  object-fit: cover;
+  object-position: center;
   box-sizing: border-box;
   border: 2px solid rgba(255, 143, 199, .72);
   border-radius: 16px;

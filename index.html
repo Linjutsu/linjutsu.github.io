@@ -672,10 +672,13 @@
           id="noraEndVideo"
           class="nora-end-video"
           src="photos/Nora_end_video.mp4"
-          controls
+          loop
           playsinline
           webkit-playsinline
           preload="metadata"
+          disablepictureinpicture
+          controlslist="nodownload noplaybackrate noremoteplayback"
+          tabindex="-1"
           aria-label="Заключительное видео">
         </video>
       </div>
@@ -811,6 +814,15 @@ const wishVideoElement =
 
 if (wishVideoElement) {
   wishVideoElement.addEventListener("contextmenu", event => {
+    event.preventDefault();
+  });
+}
+
+if (noraEndVideo) {
+  noraEndVideo.addEventListener("contextmenu", event => {
+    event.preventDefault();
+  });
+  noraEndVideo.addEventListener("keydown", event => {
     event.preventDefault();
   });
 }
